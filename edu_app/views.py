@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Course, StudentProfile, Enrollment, CourseTopic, Announcement
 from .models import (QuizQuestion, QuizAttempt, QuizAnswer, ParentStudent, StudentTopicProgress)
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import date
@@ -14,39 +14,30 @@ import os
 from google import genai
 from django.db import IntegrityError
 
-
 # Homepage
 def home(request):
     return render(request, 'edu_app/index.html')
 
-
-
 # Registration
 def register_view(request):
-
     if request.method == 'POST':
-
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip().lower()
         role = request.POST.get('role', '').strip()
         password = request.POST.get('password', '')
         confirm_password = request.POST.get('confirm_password', '')
-
         # Check required fields
         if not name or not email or not role or not password:
             messages.error(request, 'Please fill in all required fields.')
             return redirect('register')
-
         # Check password
         if password != confirm_password:
             messages.error(request, 'Passwords do not match.')
             return redirect('register')
-
         # Check valid role
         if role not in ['student', 'teacher', 'parent']:
             messages.error(request, 'Please select a valid role.')
             return redirect('register')
-
         # Check duplicate email in username and email fields
         if (
             User.objects.filter(username__iexact=email).exists()
@@ -54,7 +45,6 @@ def register_view(request):
         ):
             messages.error(request, 'This email is already registered.')
             return redirect('register')
-
         try:
             # Create user
             user = User.objects.create_user(
@@ -62,70 +52,57 @@ def register_view(request):
                 email=email,
                 password=password
             )
-
             # Create user profile
             UserProfile.objects.create(
                 user=user,
                 full_name=name,
                 role=role
             )
-
         except IntegrityError:
             messages.error(request, 'This email is already registered.')
             return redirect('register')
-
         # Log out any previous user session
         logout(request)
-
         messages.success(
             request,
             'Registration successful! Please login.'
         )
-
         return redirect('login')
-
     return render(request, 'edu_app/register.html')
-
-
 
 # Login
 def login_view(request):
-
     if request.user.is_authenticated:
-
         try:
             role = request.user.userprofile.role
         except UserProfile.DoesNotExist:
             logout(request)
             return redirect('login')
-
         if role == 'teacher':
             return redirect('teacher_dashboard')
-
         elif role == 'parent':
             return redirect('parent_dashboard')
-
         else:
             return redirect('student_dashboard')
-
     if request.method == 'POST':
-
         # Accept either username or email field from login form
         username = (
             request.POST.get('username', '')
             or request.POST.get('email', '')
         ).strip().lower()
-
         password = request.POST.get('password', '')
+        users = User.objects.filter(
+            Q(username__iexact=username) |
+            Q(email__iexact=username)
+        ).distinct()
 
-        user = authenticate(
-            request,
-            username=username,
-            password=password
-        )
+        user = None
 
+        for account in users:
+            if account.check_password(password):
+                user = account
+                break
         if user is not None:
-
             try:
                 role = user.userprofile.role
             except UserProfile.DoesNotExist:
@@ -134,32 +111,25 @@ def login_view(request):
                     'Your profile is missing. Please contact the administrator.'
                 )
                 return redirect('login')
-
-            login(request, user)
+            login(request,
+    user,
+    backend='django.contrib.auth.backends.ModelBackend')
 
             # Remember Me
             if request.POST.get('remember'):
                 request.session.set_expiry(1209600)
             else:
                 request.session.set_expiry(0)
-
             if role == 'teacher':
                 return redirect('teacher_dashboard')
-
             elif role == 'parent':
                 return redirect('parent_dashboard')
-
             else:
                 return redirect('student_dashboard')
-
         messages.error(request, 'Invalid email or password.')
-
     return render(request, 'edu_app/login.html')
 
-
 # Student Dashboard
-
-
 def student_dashboard(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -168,18 +138,14 @@ def student_dashboard(request):
         role = profile.role
     except UserProfile.DoesNotExist:
         return redirect('login')
-
     if role == 'teacher':
         return redirect('teacher_dashboard')
-
     elif role == 'parent':
         return redirect('parent_dashboard')
-
     student_name = profile.full_name
 
     # Get all available courses from the database
     courses = Course.objects.all()
-
     return render(
         request,
         'edu_app/student_dashboard.html',
@@ -189,20 +155,15 @@ def student_dashboard(request):
         }
     )
 
-
-# My Courses
 # My Courses
 def courses_view(request):
-
     if not request.user.is_authenticated:
         return redirect('login')
-
     # Get or create the student's profile
     student, created = StudentProfile.objects.get_or_create(
         user=request.user,
         defaults={'semester': 1}
     )
-
     # Default course subjects
     subjects = [
         "Python Programming",
@@ -234,8 +195,8 @@ def courses_view(request):
             'student_name': request.user.userprofile.full_name
         }
     )
-def course_detail_view(request, course_id):
 
+def course_detail_view(request, course_id):
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -258,16 +219,12 @@ def course_detail_view(request, course_id):
         }
     )
 
-
-
 @login_required
 def topic_detail_view(request, topic_id):
-
     try:
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         return redirect('login')
-
     if profile.role != 'student':
         return redirect('student_dashboard')
 
@@ -279,7 +236,6 @@ def topic_detail_view(request, topic_id):
             'semester': 1
         }
     )
-
     topic = get_object_or_404(
         CourseTopic.objects.select_related('course'),
         id=topic_id
@@ -295,16 +251,12 @@ def topic_detail_view(request, topic_id):
 
     # Mark topic as completed
     if request.method == 'POST' and request.POST.get('mark_completed') == 'yes':
-
         if not progress_record.is_completed:
             progress_record.is_completed = True
             progress_record.completed_at = timezone.now()
             progress_record.save()
-
         messages.success(request, 'Topic marked as completed!')
-
         return redirect(request.path)
-
     topics = topic.course.topics.all().order_by(
         'topic_order',
         'id'
@@ -324,18 +276,14 @@ def topic_detail_view(request, topic_id):
 
 # Revision and Practice
 def revision_practice_view(request):
-
     if not request.user.is_authenticated:
         return redirect('login')
-
     try:
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         return redirect('login')
-
     if profile.role != 'student':
         return redirect('student_dashboard')
-
     student, created = StudentProfile.objects.get_or_create(
         user=request.user,
         defaults={
@@ -344,7 +292,6 @@ def revision_practice_view(request):
             'semester': 1
         }
     )
-
     topics = CourseTopic.objects.select_related(
         'course'
     ).order_by(
@@ -358,69 +305,51 @@ def revision_practice_view(request):
     # Also get topic ID when quiz is submitted
     if request.method == 'POST':
         topic_id = request.POST.get('topic_id')
-
     selected_topic = None
     questions = QuizQuestion.objects.none()
-
     score = None
     total_questions = 0
     quiz_submitted = False
-
     if topic_id:
-
         selected_topic = get_object_or_404(
             topics.select_related('course'),
             id=topic_id
         )
-
         questions = QuizQuestion.objects.filter(
             topic=selected_topic
         ).order_by('id')
-
         if request.method == 'POST' and questions.exists():
-
             score = 0
             answer_records = []
-
             for question in questions:
-
                 selected_option = request.POST.get(
                     f'question_{question.id}', ''
                 )
-
                 is_correct = (
                     selected_option == question.correct_option
                 )
-
                 if is_correct:
                     score += 1
-
                 answer_records.append({
                     'question': question,
                     'selected_option': selected_option,
                     'is_correct': is_correct
                 })
-
             total_questions = questions.count()
-
             attempt = QuizAttempt.objects.create(
                 student=student,
                 topic=selected_topic,
                 score=score,
                 total_questions=total_questions
             )
-
             for answer in answer_records:
-
                 if answer['selected_option'] in ['A', 'B', 'C', 'D']:
-
                     QuizAnswer.objects.create(
                         attempt=attempt,
                         question=answer['question'],
                         selected_option=answer['selected_option'],
                         is_correct=answer['is_correct']
                     )
-
             quiz_submitted = True
 
     return render(
@@ -437,9 +366,7 @@ def revision_practice_view(request):
         }
     )
 
-# =========================
-# STUDENT QUIZ
-# =========================
+# STUDENT QUIZ # 
 
 def quiz_view(request, topic_id):
 
