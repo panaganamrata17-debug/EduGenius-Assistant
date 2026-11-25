@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from .models import UserProfile, Attendance
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +12,7 @@ from django.utils import timezone
 from datetime import date
 import os
 from google import genai
+from django.db import IntegrityError
 
 
 # Homepage
@@ -18,8 +20,8 @@ def home(request):
     return render(request, 'edu_app/index.html')
 
 
-# Registration
 
+# Registration
 def register_view(request):
 
     if request.method == 'POST':
@@ -40,29 +42,40 @@ def register_view(request):
             messages.error(request, 'Passwords do not match.')
             return redirect('register')
 
-        # Check existing email
-        if User.objects.filter(username=email).exists():
-            messages.error(request, 'This email is already registered.')
-            return redirect('register')
-
         # Check valid role
         if role not in ['student', 'teacher', 'parent']:
             messages.error(request, 'Please select a valid role.')
             return redirect('register')
 
-        # Create user
-        user = User.objects.create_user(
-            username=email,
-            email=email,
-            password=password
-        )
+        # Check duplicate email in username and email fields
+        if (
+            User.objects.filter(username__iexact=email).exists()
+            or User.objects.filter(email__iexact=email).exists()
+        ):
+            messages.error(request, 'This email is already registered.')
+            return redirect('register')
 
-        # Create user profile
-        UserProfile.objects.create(
-            user=user,
-            full_name=name,
-            role=role
-        )
+        try:
+            # Create user
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password
+            )
+
+            # Create user profile
+            UserProfile.objects.create(
+                user=user,
+                full_name=name,
+                role=role
+            )
+
+        except IntegrityError:
+            messages.error(request, 'This email is already registered.')
+            return redirect('register')
+
+        # Log out any previous user session
+        logout(request)
 
         messages.success(
             request,
@@ -74,11 +87,17 @@ def register_view(request):
     return render(request, 'edu_app/register.html')
 
 
+
 # Login
 def login_view(request):
+
     if request.user.is_authenticated:
 
-        role = request.user.userprofile.role
+        try:
+            role = request.user.userprofile.role
+        except UserProfile.DoesNotExist:
+            logout(request)
+            return redirect('login')
 
         if role == 'teacher':
             return redirect('teacher_dashboard')
@@ -88,15 +107,25 @@ def login_view(request):
 
         else:
             return redirect('student_dashboard')
+
     if request.method == 'POST':
-        username = request.POST.get('username', '').strip().lower()
+
+        # Accept either username or email field from login form
+        username = (
+            request.POST.get('username', '')
+            or request.POST.get('email', '')
+        ).strip().lower()
+
         password = request.POST.get('password', '')
+
         user = authenticate(
             request,
             username=username,
             password=password
         )
+
         if user is not None:
+
             try:
                 role = user.userprofile.role
             except UserProfile.DoesNotExist:
@@ -105,12 +134,14 @@ def login_view(request):
                     'Your profile is missing. Please contact the administrator.'
                 )
                 return redirect('login')
+
             login(request, user)
-             # Remember Me
+
+            # Remember Me
             if request.POST.get('remember'):
-                request.session.set_expiry(1209600)  # 14 days
+                request.session.set_expiry(1209600)
             else:
-                request.session.set_expiry(0)  # Until browser closes
+                request.session.set_expiry(0)
 
             if role == 'teacher':
                 return redirect('teacher_dashboard')
@@ -132,7 +163,6 @@ def login_view(request):
 def student_dashboard(request):
     if not request.user.is_authenticated:
         return redirect('login')
-
     try:
         profile = request.user.userprofile
         role = profile.role
