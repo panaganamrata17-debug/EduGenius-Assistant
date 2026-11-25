@@ -161,6 +161,7 @@ def student_dashboard(request):
 
 
 # My Courses
+# My Courses
 def courses_view(request):
 
     if not request.user.is_authenticated:
@@ -171,6 +172,26 @@ def courses_view(request):
         user=request.user,
         defaults={'semester': 1}
     )
+
+    # Default course subjects
+    subjects = [
+        "Python Programming",
+        "Java Programming",
+        "Web Technology",
+        "Database Management",
+        "Computer Networks",
+        "Software Engineering",
+    ]
+
+    # Add courses if they do not already exist
+    for subject in subjects:
+        Course.objects.get_or_create(
+            course_name=subject,
+            semester=1,
+            defaults={
+                "description": f"Learn {subject}"
+            }
+        )
 
     # Show all available courses to every student
     courses = Course.objects.all()
@@ -183,9 +204,6 @@ def courses_view(request):
             'student_name': request.user.userprofile.full_name
         }
     )
-
-
-
 def course_detail_view(request, course_id):
 
     if not request.user.is_authenticated:
