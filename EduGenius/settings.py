@@ -31,14 +31,10 @@ SECRET_KEY = 'django-insecure-$!c+jqg)!b$2@7z$ummrsk^6^_gi-*)0&qor7ye2-d!17r5q2l
 DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() == "true"
 
 
-# Allowed domains
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get(
-        "DJANGO_ALLOWED_HOSTS",
-        "edugenius-assistant.onrender.com,localhost,127.0.0.1"
-    ).split(",")
-    if host.strip()
+    "edugenius-assistant.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
 
