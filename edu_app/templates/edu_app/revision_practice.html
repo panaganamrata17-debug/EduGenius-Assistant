@@ -1,0 +1,283 @@
+
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Revision and Practice | EduGenius Assistant{% endblock %}
+
+{% block content %}
+<div class="student-dashboard-page">
+
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+
+            <span>EduGenius Assistant</span>
+        </a>
+
+        <div class="student-navbar-right">
+            <span>Welcome, {{ student_name }}!</span>
+
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+
+    </header>
+
+    <div class="dashboard parent-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">STUDENT MENU</p><hr>
+            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'student_courses' %}">📚 My Courses</a>
+            <a href="{% url 'student_ai_assistance' %}">🤖 AI Study Assistance</a>
+            <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
+            <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
+            <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'student_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
+        <main class="student-main-content">
+            <div class="revision-page">
+        <!-- Page Header -->
+        <div class="revision-header">
+
+            <div>
+                <span class="revision-label">LEARN • PRACTICE • IMPROVE</span>
+
+                <h1>Revision and Practice</h1>
+
+                <p>
+                    Practice your course topics, test your knowledge,
+                    and improve your understanding.
+                </p>
+            </div>
+
+            <a href="{% url 'student_dashboard' %}" class="revision-back-btn">
+                ← Dashboard
+            </a>
+
+        </div>
+
+        {% if selected_topic %}
+
+        <!-- QUIZ SECTION -->
+
+        <section class="revision-section">
+
+            <div class="revision-section-heading">
+
+                <div>
+                    <h2>{{ selected_topic.topic_title }}</h2>
+
+                    <p>
+                        {{ selected_topic.course.course_name }} -
+                        Practice Quiz
+                    </p>
+                </div>
+
+                <a href="{% url 'revision_practice' %}"
+                class="revision-back-btn">
+                    ← All Topics
+                </a>
+
+            </div>
+
+            {% if quiz_submitted %}
+
+            <!-- Quiz Result -->
+
+            <div class="revision-topic-card">
+
+                <div class="revision-topic-icon">
+                    🎉
+                </div>
+
+                <h2>Quiz Completed!</h2>
+
+                <h3>
+                    Your Score: {{ score }} / {{ total_questions }}
+                </h3>
+
+                <p>
+                    You answered {{ score }} questions correctly.
+                </p>
+
+                <a href="{% url 'revision_practice' %}"
+                class="revision-start-btn">
+                    Back to Topics →
+                </a>
+
+            </div>
+
+            {% elif questions %}
+
+            <!-- Quiz Questions -->
+
+            <form method="POST" class="revision-quiz-form">
+
+                {% csrf_token %}
+
+                <input type="hidden"
+                    name="topic_id"
+                    value="{{ selected_topic.id }}">
+
+                {% for question in questions %}
+
+                <div class="revision-topic-card">
+
+                    <h3>
+                        {{ forloop.counter }}.
+                        {{ question.question_text }}
+                    </h3>
+
+                    <div class="revision-quiz-options">
+
+                        <label>
+                            <input type="radio"
+                                name="question_{{ question.id }}"
+                                value="A"
+                                required>
+                            {{ question.option_a }}
+                        </label>
+
+                        <label>
+                            <input type="radio"
+                                name="question_{{ question.id }}"
+                                value="B">
+                            {{ question.option_b }}
+                        </label>
+
+                        <label>
+                            <input type="radio"
+                                name="question_{{ question.id }}"
+                                value="C">
+                            {{ question.option_c }}
+                        </label>
+
+                        <label>
+                            <input type="radio"
+                                name="question_{{ question.id }}"
+                                value="D">
+                            {{ question.option_d }}
+                        </label>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+                <button type="submit" class="revision-start-btn">
+                    Submit Quiz
+                </button>
+
+            </form>
+
+            {% else %}
+
+            <!-- No Questions -->
+
+            <div class="revision-topic-card">
+
+                <div class="revision-topic-icon">
+                    📘
+                </div>
+
+                <h3>No Quiz Questions Available</h3>
+
+                <p>
+                    Quiz questions for this topic have not been added yet.
+                </p>
+
+                <a href="{% url 'revision_practice' %}"
+                class="revision-start-btn">
+                    ← Back to Topics
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+        {% else %}
+
+        <!-- TOPICS SECTION -->
+
+        <section class="revision-section">
+
+            <div class="revision-section-heading">
+                
+                <div>
+                    
+                    <h2>Choose a Topic</h2>
+
+                    <p>
+                        Select a topic below to start your practice quiz.
+                    </p>
+                </div>
+                
+                <span class="revision-topic-count">
+                    {{ topics|length }} Topics
+                </span>
+
+            </div>
+
+            <div class="revision-topic-grid">
+
+                {% for topic in topics %}
+
+                <div class="revision-topic-card">
+
+                    <div class="revision-topic-icon">
+                        📘
+                    </div>
+
+                    <span class="revision-course-name">
+                        {{ topic.course.course_name }}
+                    </span>
+
+                    <h3>{{ topic.topic_title }}</h3>
+
+                    <p>
+                        {{ topic.description|default:"Review this topic and test your understanding."|truncatewords:18 }}
+                    </p>
+
+                    <a href="{% url 'revision_practice' %}?topic={{ topic.id }}"
+                    class="revision-start-btn">
+                        Start Practice →
+                    </a>
+
+                </div>
+
+                {% empty %}
+
+                <div class="revision-empty">
+                    <p>
+                        No practice topics are available yet.
+                        Please check back after topics have been added to your courses.
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+    </div>
+</main>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+{% block title %}My Students | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+    <div class="teacher-dashboard">
+
+    <!-- Teacher Navbar -->
+    <header class="navbar">
+    <div class="teacher-navbar-brand">
+        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+        <span>EduGenius <strong>Assistant</strong></span>
+    </div>
+
+    <div class="teacher-navbar-user">
+        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+    </div>
+</header>
+
+    <!-- Teacher Sidebar -->
+    <aside class="teacher-sidebar">
+        <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">TEACHER MENU</p><hr>
+        <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
+        <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
+        <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
+        <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
+        <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
+        <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+
+    <main class="student-main-content">
+
+        <section class="student-dashboard">
+            <center>
+            <h1>My Students</h1>
+
+            <p>View registered students in EduGenius Assistant.</p>
+                </center>
+            {% if students %}
+                <div class="student-dashboard-grid">
+
+                    {% for student in students %}
+
+                        <div class="student-feature-card">
+
+                            <h3>{{ student.user.userprofile.full_name }}</h3>
+                            <p>
+                                Email: {{ student.user.email }}
+                            </p>
+                            <p>
+                                College: {{ student.college_name }}
+                            </p>
+
+                            <p>
+                                Course: {{ student.course_name }}
+                            </p>
+
+                            <p>
+                                Semester: {{ student.semester }}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p>No registered students found.</p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

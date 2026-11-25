@@ -1,0 +1,248 @@
+
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Learning Progress | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+<div class="student-dashboard-page">
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius Assistant</span>
+        </a>
+
+        <div class="student-navbar-right">
+            <span>Welcome, {{ student_name }}!</span>
+            <a href="{% url 'logout' %}" class="student-logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <div class="dashboard parent-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">STUDENT MENU</p><hr>
+            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'student_courses' %}">📚 My Courses</a>
+            <a href="{% url 'student_ai_assistance' %}">🤖 AI Study Assistance</a>
+            <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
+            <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
+            <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'student_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
+<!-- Main Page Content -->
+<main class="student-main-content">
+
+    <div class="learning-progress-page">
+
+        <!-- Page Header -->
+        <div class="learning-progress-header">
+            <div>
+                <center>
+                <span class="learning-progress-label">
+                    TRACK • LEARN • IMPROVE
+                </span>
+
+                <h1>Learning Progress</h1>
+
+                <p>
+                    Track your quiz performance and see how much you have learned.
+                </p>
+                </center>
+            </div>
+        </div>
+
+        <!-- Progress Summary -->
+        <div class="progress-summary-grid">
+
+            <div class="progress-summary-card">
+                <span class="progress-card-icon">📝</span>
+                <h3>Total Quizzes</h3>
+                <h2>{{ total_attempts }}</h2>
+                <p>Quizzes completed</p>
+            </div>
+
+            <div class="progress-summary-card">
+                <span class="progress-card-icon">🎯</span>
+                <h3>Questions</h3>
+                <h2>{{ total_questions }}</h2>
+                <p>Questions attempted</p>
+            </div>
+
+            <div class="progress-summary-card">
+                <span class="progress-card-icon">✅</span>
+                <h3>Correct Answers</h3>
+                <h2>{{ total_correct }}</h2>
+                <p>Correct responses</p>
+            </div>
+
+            <div class="progress-summary-card">
+                <span class="progress-card-icon">📊</span>
+                <h3>Overall Score</h3>
+                <h2>{{ overall_percentage }}%</h2>
+                <p>Quiz accuracy</p>
+            </div>
+
+        </div>
+
+        <!-- Topic Progress -->
+        <section class="learning-topic-section">
+
+            <div class="learning-section-heading">
+                <div>
+                    <h2>Topic-wise Progress</h2>
+                    <p>Your performance in each practiced topic.</p>
+                </div>
+            </div>
+
+            {% if topic_progress %}
+
+                <div class="learning-topic-list">
+
+                    {% for item in topic_progress %}
+
+                        <div class="learning-topic-card">
+
+                            <div class="learning-topic-info">
+                                <div>
+                                    <h3>{{ item.topic.topic_title }}</h3>
+                                    <p>{{ item.topic.course.course_name }}</p>
+                                </div>
+
+                                <span class="learning-topic-score">
+                                    {{ item.percentage }}%
+                                </span>
+                            </div>
+
+                            <div class="learning-progress-track">
+                                <div
+                                    class="learning-progress-fill"
+                                    style="--progress-width: {{ item.percentage }}%;">
+                                </div>
+                            </div>
+
+                            <div class="learning-topic-footer">
+                                <span>
+                                    {{ item.total_score }} /
+                                    {{ item.total_questions }} correct
+                                </span>
+
+                                <span>
+                                    {{ item.attempts }} attempt(s)
+                                </span>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="learning-empty-state">
+                    <div class="learning-empty-icon">📚</div>
+                    <h3>No quiz progress yet</h3>
+                    <p>
+                        Complete a quiz in Revision and Practice to see
+                        your learning progress here.
+                    </p>
+
+                    <a href="{% url 'revision_practice' %}">
+                        Start Practicing →
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </section>
+        <!-- Topic Complete -->
+         <section class="learning-topic-section">
+            <div class="learning-section-heading">
+                <div>
+                    <h2>Completed Topics</h2>
+                    <p>Topics you have successfully completed.</p>
+                </div>
+            </div>
+
+            {% if completed_topics %}
+                <div class="completed-topic-list">
+                    {% for topic in completed_topics %}
+                        <div class="completed-topic-card">
+                            <div class="completed-topic-icon">✓</div>
+                            <div class="completed-topic-info">
+                                <h3>{{ topic.topic_title }}</h3>
+                                <p>{{ topic.course.course_name }}</p>
+                            </div>
+                            <span class="completed-topic-status">Completed</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+            <p>No completed topics yet. Complete a topic quiz to see it here.</p>
+        {% endif %}
+        </section>
+        <!-- Recent Quiz Attempts -->
+        <section class="learning-topic-section">
+
+            <div class="learning-section-heading">
+                <div>
+                    <h2>Recent Quiz Attempts</h2>
+                    <p>Your recently completed quizzes.</p>
+                </div>
+            </div>
+
+            {% if attempts %}
+
+                <div class="learning-attempt-list">
+
+                    {% for attempt in attempts %}
+
+                        <div class="learning-attempt-card">
+
+                            <div class="learning-attempt-details">
+                                <h3>{{ attempt.topic.topic_title }}</h3>
+                                <p>{{ attempt.topic.course.course_name }}</p>
+                                <span>
+                                    {{ attempt.attempted_at|date:"d M Y, h:i A" }}
+                                </span>
+                            </div>
+
+                            <div class="learning-attempt-result">
+                                <strong>
+                                    {{ attempt.score }}/{{ attempt.total_questions }}
+                                </strong>
+
+                                <span>
+                                    {{ attempt.percentage|floatformat:0 }}%
+                                </span>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="learning-empty-small">
+                    Your quiz attempts will appear here after you complete a quiz.
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</main>
+
+{% endblock %}

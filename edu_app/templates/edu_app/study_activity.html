@@ -1,0 +1,194 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Study Activity | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+<div class="parent-dashboard-page">
+
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+
+            <span>EduGenius Assistant</span>
+        </a>
+
+        <div class="student-navbar-right">
+            <span>Welcome, {{ parent_name }}!</span>
+
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard parent-dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">PARENT MENU</p><hr>
+        <a href="{% url 'parent_dashboard' %}" class="active">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'parent_student_performance' %}">
+            📊 Student Performance
+        </a>
+
+        <a href="{% url 'parent_student_progress' %}">
+            📈 Student Progress
+        </a>
+
+        <a href="{% url 'parent_study_activity' %}">
+            📚 Study Activity
+        </a>
+
+        <a href="{% url 'parent_announcements' %}">
+            📢 Announcements
+        </a>
+
+        <a href="{% url 'parent_attendance' %}">
+        📅 Attendance
+    </a>
+    <a href="{% url 'profile' %}">
+    👤 My Profile
+</a>
+        <a href="{% url 'logout' %}">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+        <!-- Main Content: Uses space beside sidebar -->
+        <main class="dashboard-content">
+
+            <div class="study-activity-page">
+
+                <!-- Page Header -->
+                <div class="study-activity-header">
+
+                    <div>
+                        <span class="study-activity-label"></span>
+                        <h1>Study Activity</h1>
+
+                        <p>
+                            Track your student's learning activities
+                            and completed study tasks.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="study-activity-summary">
+
+                    <div class="study-activity-summary-card">
+                        <h3>Total Activities</h3>
+                        <p>{{ activities|length }}</p>
+                        <span>Learning activities recorded</span>
+                    </div>
+
+                    <div class="study-activity-summary-card">
+                        <h3>Parent Account</h3>
+                        <p>{{ parent_name }}</p>
+                        <span>Linked student activity</span>
+                    </div>
+
+                </div>
+
+                <!-- Activity Table -->
+                <div class="study-activity-table-card">
+
+                    <div class="study-activity-table-heading">
+                        <div>
+                            <h2>Recent Learning Activities</h2>
+                            <p>
+                                Completed topics and quiz attempts
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if activities %}
+
+                    <div class="study-activity-table-wrapper">
+
+                        <table class="study-activity-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Student</th>
+                                    <th>Activity</th>
+                                    <th>Course</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in activities %}
+                                <tr>
+
+                                    <td>
+                                        {% if item.date %}
+                                            {{ item.date|date:"d M Y, h:i A" }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </td>
+
+                                    <td>{{ item.student_name }}</td>
+
+                                    <td>{{ item.activity }}</td>
+
+                                    <td>{{ item.course }}</td>
+
+                                    <td>{{ item.details }}</td>
+
+                                    <td>
+                                        <span class="study-activity-status">
+                                            {{ item.status }}
+                                        </span>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="study-activity-empty">
+                        <h3>No Study Activity Yet</h3>
+
+                        <p>
+                            Learning activities will appear here
+                            when your linked student completes topics
+                            or attempts quizzes.
+                        </p>
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+{% endblock %}

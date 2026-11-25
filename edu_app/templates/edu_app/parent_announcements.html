@@ -1,0 +1,183 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Announcements | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+<div class="parent-dashboard-page">
+
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+
+            <span>EduGenius Assistant</span>
+        </a>
+
+        <div class="student-navbar-right">
+            <span>Welcome, {{ parent_name }}!</span>
+
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard parent-dashboard">
+
+        <!-- Fixed Sidebar -->
+        <aside class="sidebar">
+
+            <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">PARENT MENU</p><hr>
+        <a href="{% url 'parent_dashboard' %}" class="active">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'parent_student_performance' %}">
+            📊 Student Performance
+        </a>
+
+        <a href="{% url 'parent_student_progress' %}">
+            📈 Student Progress
+        </a>
+
+        <a href="{% url 'parent_study_activity' %}">
+            📚 Study Activity
+        </a>
+
+        <a href="{% url 'parent_announcements' %}">
+            📢 Announcements
+        </a>
+
+        <a href="{% url 'parent_attendance' %}">
+        📅 Attendance
+    </a>
+    <a href="{% url 'profile' %}">
+    👤 My Profile
+</a>
+        <a href="{% url 'logout' %}">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+
+            <div class="parent-announcements-page">
+
+                <!-- Page Header -->
+                <div class="parent-announcements-header">
+
+                    <div>
+                        <span class="parent-announcements-label">
+                        
+                        </span>
+
+                        <h1>Announcements</h1>
+
+                        <p>
+                            Stay updated with important notices
+                            and information from your college.
+                        </p>
+                    </div>
+
+                    <a href="{% url 'parent_dashboard' %}"
+                       class="parent-announcements-back">
+                        ← Back to Dashboard
+                    </a>
+
+                </div>
+
+                <!-- Announcement Count -->
+                <div class="parent-announcements-summary">
+
+                    <div class="parent-announcements-summary-card">
+                        <div>
+                            <h3>Available Announcements</h3>
+                            <p>{{ announcements|length }}</p>
+                        </div>
+
+                        <span class="announcement-summary-icon">
+                            📢
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Announcement List -->
+                <div class="parent-announcements-list">
+
+                    <h2>Latest Notices</h2>
+
+                    {% if announcements %}
+
+                        {% for announcement in announcements %}
+
+                        <div class="parent-announcement-card">
+
+                            <div class="parent-announcement-top">
+
+                                <div class="parent-announcement-icon">
+                                    📢
+                                </div>
+
+                                <div class="parent-announcement-info">
+                                    <h3>
+                                        {{ announcement.title }}
+                                    </h3>
+
+                                    <span>
+                                        Posted on
+                                        {{ announcement.created_at|date:"d M Y, h:i A" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="parent-announcement-message">
+                                {{ announcement.message|linebreaks }}
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="parent-announcements-empty">
+
+                            <div class="parent-announcements-empty-icon">
+                                📭
+                            </div>
+
+                            <h3>No Announcements Yet</h3>
+
+                            <p>
+                                There are currently no announcements.
+                                New notices will appear here when they
+                                are published.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+{% endblock %}

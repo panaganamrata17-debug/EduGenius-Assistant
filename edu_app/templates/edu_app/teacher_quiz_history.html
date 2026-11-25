@@ -1,0 +1,76 @@
+
+{% extends 'edu_app/base.html' %}
+{% load static %}
+{% block title %}Quiz History | EduGenius Assistant{% endblock %}
+{% block content %}
+<div class="teacher-dashboard">
+    <!-- Teacher Navbar -->
+    <header class="navbar">
+    <div class="teacher-navbar-brand">
+        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+        <span>EduGenius <strong>Assistant</strong></span>
+    </div>
+
+    <div class="teacher-navbar-user">
+        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+    </div>
+</header>
+    <!-- Teacher Sidebar -->
+    <aside class="teacher-sidebar">
+        <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">TEACHER MENU</p><hr>
+        <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
+        <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
+        <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
+        <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
+        <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
+        <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+    <main class="teacher-main-content">
+        <div class="teacher-dashboard-inner">
+            <div class="teacher-welcome">
+                <h1>Quiz History</h1>
+                <p>View the quiz questions you have saved.</p>
+            </div>
+            <div class="teacher-quiz-history-list">
+                {% for quiz in quiz_questions %}
+                    <div class="teacher-quiz-history-card">
+                        <div class="teacher-quiz-history-top">
+                            <span class="teacher-quiz-topic">
+                                {{ quiz.topic.course.course_name }}
+                            </span>
+                            <span class="teacher-quiz-date">
+                                {{ quiz.created_at|date:"d M Y" }}
+                            </span>
+                        </div>
+                        <h3>{{ quiz.topic.topic_title }}</h3>
+                        <p class="teacher-quiz-question">
+                            {{ quiz.question_text }}
+                        </p>
+                        <div class="teacher-quiz-answer">
+                            <strong>Correct Answer:</strong>
+                            {% if quiz.correct_option == 'A' %}
+                                {{ quiz.option_a }}
+                            {% elif quiz.correct_option == 'B' %}
+                                {{ quiz.option_b }}
+                            {% elif quiz.correct_option == 'C' %}
+                                {{ quiz.option_c }}
+                            {% elif quiz.correct_option == 'D' %}
+                                {{ quiz.option_d }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="teacher-quiz-history-empty">
+                        <h3>No saved questions yet</h3>
+                        <p>Your saved quiz questions will appear here.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

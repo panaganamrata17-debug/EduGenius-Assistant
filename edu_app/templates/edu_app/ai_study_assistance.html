@@ -1,0 +1,116 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}AI Study Assistance | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+<div class="student-dashboard-page">
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius Assistant</span>
+        </a>
+        <div class="student-navbar-right">
+            <span>Welcome, {{ student_name }}!</span>
+            <a href="{% url 'logout' %}" class="student-logout-btn">Logout</a>
+        </div>
+    </header>
+    <div class="dashboard parent-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">STUDENT MENU</p><hr>
+            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'student_courses' %}">📚 My Courses</a>
+            <a href="{% url 'student_ai_assistance' %}">🤖 AI Study Assistance</a>
+            <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
+            <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
+            <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'student_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
+        <!-- Main Content -->
+        <main class="student-main-content">
+            <div class="ai-study-page">
+                <!-- Page Heading -->
+                <div class="ai-study-header">
+                    <div>
+                        <span class="ai-study-label">
+                            YOUR PERSONAL STUDY HELPER
+                        </span>
+                        <h1>AI Study Assistance</h1>
+                        <p>
+                            Ask questions and get help understanding
+                            your college subjects.
+                        </p>
+                    </div>
+                </div>
+                <!-- Chat Container -->
+                <div class="ai-study-chat-container">
+                    <!-- Chat Header -->
+                    <div class="ai-study-chat-header">
+                        <div class="ai-study-chat-header-left">
+                            <div class="ai-study-assistant-avatar">🤖</div>
+                            <div>
+                                <h2>EduGenius Study Assistant</h2>
+                                <span class="ai-study-status">
+                                    Ready to help you learn
+                                </span>
+                            </div>
+                        </div>
+                        <form method="POST" class="ai-study-clear-form">
+                            {% csrf_token %}
+                            <button type="submit" name="clear_chat" value="1"
+                                class="ai-study-clear-btn"> 🗑 Clear Chat
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Chat Messages -->
+                    <div class="ai-study-chat-messages">
+                        {% if chat_history %}
+                            {% for item in chat_history %}
+                                <div class="ai-study-message
+                                    {% if item.role == 'user' %}
+                                        ai-study-user-message
+                                    {% else %}
+                                        ai-study-assistant-message
+                                    {% endif %}">
+                                    {% if item.role == 'assistant' %}
+                                        <div class="ai-study-message-avatar">🤖</div>
+                                    {% endif %}
+                                    <div class="ai-study-message-content">
+                                        {{ item.message|linebreaksbr }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                        <!-- Welcome Message -->
+                        <div class="ai-study-welcome">
+                            <div class="ai-study-welcome-icon">✨</div>
+                            <h3>How can I help you study?</h3>
+                            <p> Ask me a question about your subject or a topic you find difficult.</p>
+                            <div class="ai-study-suggestions">
+                                <span>Explain a difficult topic</span>
+                                <span>Help me understand a concept</span>
+                                <span>Give me exam preparation tips</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- Message Form -->
+                <form method="POST" class="ai-study-chat-form">
+                    {% csrf_token %}
+                    <textarea name="message" class="ai-study-message-input"
+                        placeholder="Type your study question here..." rows="2" required></textarea>
+                    <button type="submit" class="ai-study-send-btn">Send ➤</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+{% endblock %}

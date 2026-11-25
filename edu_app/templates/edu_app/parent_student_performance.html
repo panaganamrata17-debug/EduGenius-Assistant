@@ -1,0 +1,121 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Student Performance | EduGenius{% endblock %}
+
+{% block content %}
+<div class="student-dashboard-page">
+
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+
+            <span>EduGenius Assistant</span>
+        </a>
+
+        <div class="student-navbar-right">
+            <span>Welcome, {{ request.user.userprofile.full_name }}!</span>
+
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+
+    </header>
+
+    <div class="dashboard parent-dashboard">
+
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">PARENT MENU</p><hr>
+        <a href="{% url 'parent_dashboard' %}" class="active">
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'parent_student_performance' %}">
+            📊 Student Performance
+        </a>
+
+        <a href="{% url 'parent_student_progress' %}">
+            📈 Student Progress
+        </a>
+
+        <a href="{% url 'parent_study_activity' %}">
+            📚 Study Activity
+        </a>
+
+        <a href="{% url 'parent_announcements' %}">
+            📢 Announcements
+        </a>
+
+        <a href="{% url 'parent_attendance' %}">
+        📅 Attendance
+    </a>
+    <a href="{% url 'profile' %}">
+    👤 My Profile
+</a>
+        <a href="{% url 'logout' %}">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+        <main class="dashboard-content performance-content">
+            <header class="dashboard-header">
+                <h3>Welcome, {{ parent_name }}!  View quiz results and scores.</h3>
+            </header>
+
+            <section class="parent-welcome">
+                <h2>Quiz Performance</h2>
+                <p>Review your child's quiz scores and topic-wise results.</p>
+            </section>
+
+            {% if attempts %}
+                <div class="performance-table-wrapper">
+                    <table class="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Topic</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for attempt in attempts %}
+                            <tr>
+                                <td>{{ attempt.student.user.userprofile.full_name }}</td>
+                                <td>{{ attempt.topic.course.course_name }}</td>
+                                <td>{{ attempt.topic.topic_title }}</td>
+                                <td>
+                                    {{ attempt.score }} /
+                                    {{ attempt.total_questions }}
+                                </td>
+                                <td>{{ attempt.percentage }}%</td>
+                                <td>{{ attempt.attempted_at|date:"d M Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="parent-welcome">
+                    <p>No quiz performance available yet</p>
+                    <p>
+                        Quiz results will appear here after the linked student
+                        completes a quiz.
+                    </p>
+                </div>
+            {% endif %}
+
+        </main>
+    </div>
+
+{% endblock %}

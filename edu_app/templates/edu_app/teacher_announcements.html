@@ -1,0 +1,129 @@
+
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Announcements | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+    <div class="teacher-dashboard">
+    <!-- Teacher Navbar -->
+    <header class="navbar">
+    <div class="teacher-navbar-brand">
+        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+        <span>EduGenius <strong>Assistant</strong></span>
+    </div>
+
+    <div class="teacher-navbar-user">
+        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+    </div>
+</header>
+
+    <!-- Teacher Sidebar -->
+    <aside class="teacher-sidebar">
+        <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">TEACHER MENU</p><hr>
+        <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
+        <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
+        <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
+        <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
+        <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
+        <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+    <main class="teacher-announcements-content">
+
+        <div class="teacher-announcements-heading">
+            <span class="teacher-announcements-label">
+                COMMUNICATE • INFORM • CONNECT
+            </span>
+
+            <h1>Announcements</h1>
+
+            <p>
+                Share important updates and information with your students.
+            </p>
+        </div>
+
+        <!-- Create Announcement Form -->
+        <section class="teacher-announcement-form">
+
+            <h2>Create Announcement</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="announcement-form-group">
+                    <label for="title">Announcement Title</label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter announcement title"
+                        required
+                    >
+                </div>
+
+                <div class="announcement-form-group">
+                    <label for="message">Announcement Message</label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Write your announcement here..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="announcement-publish-btn">
+                    Publish Announcement
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- Published Announcements -->
+        <section class="teacher-announcements-list">
+
+            <h2>Published Announcements</h2>
+
+            {% for announcement in announcements %}
+
+                <div class="teacher-announcement-card">
+
+                    <div class="teacher-announcement-card-header">
+                        <h3>{{ announcement.title }}</h3>
+
+                        <span>
+                            {{ announcement.created_at|date:"d M Y" }}
+                        </span>
+                    </div>
+
+                    <p>{{ announcement.message|linebreaks }}</p>
+
+                </div>
+
+            {% empty %}
+
+                <div class="teacher-announcement-empty">
+                    <h3>No announcements yet</h3>
+
+                    <p>
+                        Your published announcements will appear here.
+                    </p>
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

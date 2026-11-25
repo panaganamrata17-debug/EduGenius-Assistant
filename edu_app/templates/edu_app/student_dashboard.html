@@ -1,0 +1,118 @@
+
+{% extends 'edu_app/base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard | EduGenius Assistant{% endblock %}
+
+{% block content %}
+
+<div class="student-dashboard-page">
+
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+            <span>EduGenius Assistant</span>
+        </a>
+        <div class="student-navbar-right">
+            <span>Welcome, {{ student_name }}!</span>
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+    </header>
+    <div class="dashboard parent-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">STUDENT MENU</p><hr>
+            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'student_courses' %}">📚 My Courses</a>
+            <a href="{% url 'student_ai_assistance' %}">🤖 AI Study Assistance</a>
+            <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
+            <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
+            <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'student_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
+        <!-- Main Dashboard Content -->
+        <main class="student-main-content">
+
+            <section class="student-dashboard">
+
+                <div class="student-welcome">
+                    <h1>Hello, {{ student_name }} </h1>
+
+                    <p>
+                        Welcome to EduGenius Assistant.
+                        Continue learning and improve your academic performance.
+                    </p>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="student-dashboard-grid">
+
+                    <a href="{% url 'student_courses' %}"
+                    class="student-feature-card"
+                    id="courses">
+
+                        <div class="feature-icon">📚</div>
+                        <h3>My Courses</h3>
+                        <p>View your courses and continue studying.</p>
+                        <span class="feature-open">Open →</span>
+
+                    </a>
+
+                    <a href="{% url 'student_ai_assistance' %}"
+                    class="student-feature-card"
+                    id="study-assistance">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Study Assistance</h3>
+                        <p>Get help understanding difficult topics.</p>
+                        <span class="feature-open">Open →</span>
+
+                    </a>
+
+                    <a href="{% url 'student_weak_topics' %}"
+                    class="student-feature-card"
+                    id="weak-topics">
+
+                        <div class="feature-icon">🎯</div>
+                        <h3>Weak Topics</h3>
+                        <p>Identify topics that need more practice.</p>
+                        <span class="feature-open">Open →</span>
+
+                    </a>
+
+                    <a href="{% url 'revision_practice' %}"
+                    class="student-feature-card"
+                    id="revision-practice">
+
+                        <div class="feature-icon">📝</div>
+                        <h3>Revision & Practice</h3>
+                        <p>Revise your topics and practice questions.</p>
+                        <span class="feature-open">Open →</span>
+
+                    </a>
+
+                    <a href="{% url 'learning_progress' %}"
+                    class="student-feature-card"
+                    id="learning-progress">
+
+                        <div class="feature-icon">📊</div>
+                        <h3>Learning Progress</h3>
+                        <p>Keep track of your learning progress.</p>
+                        <span class="feature-open">Open →</span>
+
+                    </a>
+                </div>
+
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+{% block title %}
+    {% if topic %}
+        {{ topic.topic_title }} | EduGenius Assistant
+    {% else %}
+        {{ course.course_name }} | EduGenius Assistant
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="student-dashboard-page">
+    <!-- Fixed Navbar -->
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="student-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}"
+                 alt="EduGenius Logo">
+            <span>EduGenius Assistant</span>
+        </a>
+        <div class="student-navbar-right">
+            <span>Welcome, {{ student_name }}!</span>
+            <a href="{% url 'logout' %}"
+               class="student-logout-btn">
+                Logout
+            </a>
+        </div>
+    </header>
+    <div class="dashboard parent-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">STUDENT MENU</p><hr>
+            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'student_courses' %}">📚 My Courses</a>
+            <a href="{% url 'student_ai_assistance' %}">🤖 AI Study Assistance</a>
+            <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
+            <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
+            <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'student_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
+    <!-- Main Content -->
+    <main class="student-main-content">
+        <section class="student-dashboard">
+            {% if topic %}
+                <div class="lesson-page">
+                    <!-- Lesson Breadcrumb -->
+                    <div class="lesson-breadcrumb">
+                        <a href="{% url 'student_courses' %}">My Courses</a>
+                        <span>›</span>
+                        <a href="{% url 'course_detail' course.id %}">
+                            {{ course.course_name }}
+                        </a>
+                        <span>›</span>
+                        <span class="lesson-current">
+                            {{ topic.topic_title }}
+                        </span>
+                    </div>
+                    <!-- Lesson Header -->
+                    <div class="lesson-header">
+                        <div class="lesson-label">COURSE LESSON</div>
+                        <h1>{{ topic.topic_title }}</h1>
+                        {% if topic.description %}
+                            <p>{{ topic.description }}</p>
+                        {% endif %}
+                    </div>
+                    <!-- Lesson Content -->
+                    <div class="lesson-content-card">
+                        <div class="lesson-content-heading">
+                            <span class="lesson-content-icon">📘</span>
+                            <h2>Lesson Overview</h2>
+                        </div>
+                        <div class="lesson-content-body">
+                            {% if topic.content %}
+                                {{ topic.content|linebreaks }}
+                            {% else %}
+                                <p>Lesson content will be added soon.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Topic Completion -->
+                    <div class="topic-completion-section">
+                        {% if progress_record.is_completed %}
+                            <div class="topic-completed-message">
+                                ✓ Topic Completed
+                            </div>
+                        {% else %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        name="mark_completed"
+                                        value="yes"
+                                        class="complete-topic-btn">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="lesson-back-topics">
+    <a href="{% url 'course_detail' course.id %}">
+        ← Back to Topics
+    </a>
+</div>
+                {% else %}
+
+                <div class="course-detail-page">
+
+                    <!-- Course Header -->
+                    <div class="course-detail-header">
+
+                        
+                        <center>
+                        <h1>{{ course.course_name }}</h1>
+
+                            </center>
+                    </div>
+
+                    <!-- Course Topics -->
+                    <section class="course-topics-section">
+
+                        <h2>Course Topics</h2>
+
+                        <div class="student-dashboard-grid">
+
+                            {% for topic in topics %}
+
+                                <a href="{% url 'topic_detail' topic.id %}"
+                                class="student-feature-card">
+
+                                    <div class="feature-icon">📘</div>
+
+                                    <h3>{{ topic.topic_title }}</h3>
+
+                                    {% if topic.description %}
+                                        <p>{{ topic.description }}</p>
+                                    {% endif %}
+
+                                    <span class="feature-open">
+                                        Open Lesson →
+                                    </span>
+
+                                </a>
+
+                            {% empty %}
+
+                                <p>No topics added to this course yet.</p>
+
+                            {% endfor %}
+
+                        </div>
+                        <div class="course-back-button-container">
+                            <a href="{% url 'student_courses' %}"
+                            class="course-back-circle"
+                            title="Back to My Courses">
+                                ←Back to My Courses
+                            </a>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+            {% endif %}
+        </section>
+    </main>
+</div>
+{% endblock %}

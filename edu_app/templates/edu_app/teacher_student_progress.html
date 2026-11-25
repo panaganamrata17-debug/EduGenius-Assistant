@@ -1,0 +1,59 @@
+{% extends 'edu_app/base.html' %}
+{% load static %}
+{% block title %}Student Progress | EduGenius Assistant{% endblock %}
+{% block content %}
+<div class="teacher-dashboard">
+    <!-- Teacher Navbar -->
+    <header class="navbar">
+    <div class="teacher-navbar-brand">
+        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+        <span>EduGenius <strong>Assistant</strong></span>
+    </div>
+
+    <div class="teacher-navbar-user">
+        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+    </div>
+</header>
+    <!-- Teacher Sidebar -->
+    <aside class="teacher-sidebar">
+        <h2>🎓 EduGenius</h2>
+        <p class="sidebar-heading">TEACHER MENU</p><hr>
+        <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
+        <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
+        <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
+        <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
+        <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
+        <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+    <div class="teacher-student-progress-page">
+        <h1>Student Learning Progress</h1>
+        <p>Track students' completed topics and learning progress.</p>
+        <a href="{% url 'teacher_dashboard' %}" class="feature-open">← Back to Dashboard</a>
+        <div class="teacher-progress-grid">
+            {% for item in progress_data %}
+            <div class="teacher-progress-card">
+                <h3>{{ item.student.user.userprofile.full_name }}</h3>
+                <p>Completed Topics:
+                    {{ item.completed_topics }} / {{ item.total_topics }}
+                </p>
+                <div class="teacher-progress-bar">
+                    <div class="teacher-progress-fill"
+                        data-progress="{{ item.progress_percentage|default:0 }}">
+                    </div>
+                </div>
+                <p>{{ item.progress_percentage }}% Completed</p>
+            </div>
+        {% empty %}
+        <p>No students registered yet.</p>
+        {% endfor %}
+    </div>
+</div>
+<script>
+document.querySelectorAll('.teacher-progress-fill').forEach(function(bar) {
+    let progress = bar.dataset.progress || 0;
+    bar.style.width = progress + '%';});
+</script>
+{% endblock %}
