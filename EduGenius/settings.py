@@ -4,6 +4,7 @@ Django settings for EduGenius project.
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project
@@ -92,13 +93,16 @@ WSGI_APPLICATION = "EduGenius.wsgi.application"
 
 # Database
 # SQLite is kept for now, as in your original settings.
+# Database configuration - SQLite
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.environ.get(
+            "DJANGO_DB_PATH",
+            BASE_DIR / "db.sqlite3"
+        ),
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
