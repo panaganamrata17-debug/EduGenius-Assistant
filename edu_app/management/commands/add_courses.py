@@ -10,9 +10,6 @@ class Command(BaseCommand):
             "Python Programming",
             "Java Programming",
             "Web Technology",
-            "Database Management",
-            "Computer Networks",
-            "Software Engineering",
         ]
 
         for subject in subjects:
@@ -25,5 +22,5 @@ class Command(BaseCommand):
             )
 
         self.stdout.write(
-            self.style.SUCCESS("All 6 courses added successfully!")
+            self.style.SUCCESS("All 3 courses added successfully!")
         )

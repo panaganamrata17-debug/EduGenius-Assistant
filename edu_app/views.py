@@ -194,7 +194,7 @@ def courses_view(request):
         )
 
     # Show all available courses to every student
-    courses = Course.objects.all()
+    courses = Course.objects.filter(course_name__in=subjects)
 
     return render(
         request,

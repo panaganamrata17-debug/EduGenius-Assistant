@@ -42,3 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     updateRoleFields();
 
 });
+
+/* Teacher student progress */
+document.querySelectorAll('.teacher-progress-fill').forEach(function(bar) {
+    let progress = bar.dataset.progress || 0;
+    bar.style.width = progress + '%';});
