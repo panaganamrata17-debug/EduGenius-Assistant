@@ -169,9 +169,6 @@ def courses_view(request):
         "Python Programming",
         "Java Programming",
         "Web Technology",
-        "Database Management",
-        "Computer Networks",
-        "Software Engineering",
     ]
 
     # Add courses if they do not already exist
