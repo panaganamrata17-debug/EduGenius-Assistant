@@ -1,33 +1,33 @@
-
 from django.core.management.base import BaseCommand
 from edu_app.models import Course, CourseTopic
 
 
 class Command(BaseCommand):
-    help = "Add 4 topics to Python, Java and Web Technology"
+    help = "Add the selected topics to Python, Java and Web Technology"
 
     def handle(self, *args, **kwargs):
 
         course_topics = {
             "Python Programming": [
                 "Introduction to Python",
-                "Python Variables and Data Types",
-                "Python Operators",
-                "Python Conditional Statements",
+                "Variables and Data Types",
+                "Conditional Statements",
+                "Python Loops",
             ],
 
             "Java Programming": [
                 "Introduction to Java",
-                "Java Variables and Data Types",
-                "Java Operators",
-                "Java Conditional Statements",
+                "Java Variables",
+                "Java Conditions",
+                "Java Loops",
             ],
 
             "Web Technology": [
-                "Introduction to HTML",
-                "HTML Forms and Tables",
+                "Introduction to Web Technology",
+                "HTML Basics",
                 "CSS Basics",
-                "JavaScript Fundamentals",
+                "JavaScript Basics",
+                "HTML Forms and Tables",
             ],
         }
 
