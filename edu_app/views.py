@@ -9,7 +9,7 @@ from .models import (QuizQuestion, QuizAttempt, QuizAnswer, ParentStudent, Stude
 from django.db.models import Sum, Count, Q
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from datetime import date
+from datetime import date, timedelta
 import os
 from google import genai
 from django.db import IntegrityError
@@ -847,7 +847,11 @@ def student_announcements_view(request):
         return redirect("login")
 
     # Get announcements using the existing announcement feature
-    announcements = Announcement.objects.all().order_by("-created_at")
+    announcements = Announcement.objects.filter(
+        is_active=True
+    ).filter(
+        Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
+    ).order_by("-created_at")
 
     context = {
         "profile": profile,
@@ -1079,12 +1083,14 @@ def teacher_announcements(request):
     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         message = request.POST.get('message', '').strip()
+        expiry_days = int(request.POST.get('expiry_days', 7))
 
         if title and message:
             Announcement.objects.create(
                 title=title,
                 message=message,
-                created_by=request.user
+                created_by=request.user,
+                expires_at=timezone.now() + timedelta(days=expiry_days)
             )
 
             messages.success(
@@ -1102,8 +1108,10 @@ def teacher_announcements(request):
     announcements = Announcement.objects.filter(
         created_by=request.user,
         is_active=True
+    ).filter(
+        Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
     ).order_by('-created_at')
-
+        
     return render(
         request,
         'edu_app/teacher_announcements.html',
@@ -1519,6 +1527,8 @@ def parent_announcements_view(request):
 
     announcements = Announcement.objects.filter(
         is_active=True
+    ).filter(
+        Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
     ).order_by('-created_at')
 
     context = {
