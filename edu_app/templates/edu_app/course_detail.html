@@ -40,129 +40,129 @@
             <a href="{% url 'profile' %}">👤 Profile</a>
             <a href="{% url 'logout' %}">🚪 Logout</a>
         </aside>
-    <!-- Main Content -->
-    <main class="student-main-content">
-        <section class="student-dashboard">
-            {% if topic %}
-                <div class="lesson-page">
-                    <!-- Lesson Breadcrumb -->
-                    <div class="lesson-breadcrumb">
-                        <a href="{% url 'student_courses' %}">My Courses</a>
-                        <span>›</span>
-                        <a href="{% url 'course_detail' course.id %}">
-                            {{ course.course_name }}
-                        </a>
-                        <span>›</span>
-                        <span class="lesson-current">
-                            {{ topic.topic_title }}
-                        </span>
-                    </div>
-                    <!-- Lesson Header -->
-                    <div class="lesson-header">
-                        <div class="lesson-label">COURSE LESSON</div>
-                        <h1>{{ topic.topic_title }}</h1>
-                        {% if topic.description %}
-                            <p>{{ topic.description }}</p>
-                        {% endif %}
-                    </div>
-                    <!-- Lesson Content -->
-                    <div class="lesson-content-card">
-                        <div class="lesson-content-heading">
-                            <span class="lesson-content-icon">📘</span>
-                            <h2>Lesson Overview</h2>
+        <!-- Main Content -->
+        <main class="student-main-content">
+            <section class="student-dashboard">
+                {% if topic %}
+                    <div class="lesson-page">
+                        <!-- Lesson Breadcrumb -->
+                        <div class="lesson-breadcrumb">
+                            <a href="{% url 'student_courses' %}">My Courses</a>
+                            <span>›</span>
+                            <a href="{% url 'course_detail' course.id %}">
+                                {{ course.course_name }}
+                            </a>
+                            <span>›</span>
+                            <span class="lesson-current">
+                                {{ topic.topic_title }}
+                            </span>
                         </div>
-                        <div class="lesson-content-body">
-                            {% if topic.content %}
-                                {{ topic.content|linebreaks }}
+                        <!-- Lesson Header -->
+                        <div class="lesson-header">
+                            <div class="lesson-label">COURSE LESSON</div>
+                            <h1>{{ topic.topic_title }}</h1>
+                            {% if topic.description %}
+                                <p>{{ topic.description }}</p>
+                            {% endif %}
+                        </div>
+                        <!-- Lesson Content -->
+                        <div class="lesson-content-card">
+                            <div class="lesson-content-heading">
+                                <span class="lesson-content-icon">📘</span>
+                                <h2>Lesson Overview</h2>
+                            </div>
+                            <div class="lesson-content-body">
+                                {% if topic.content %}
+                                    {{ topic.content|linebreaks }}
+                                {% else %}
+                                    <p>Lesson content will be added soon.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Topic Completion -->
+                        <div class="topic-completion-section">
+                            {% if progress_record.is_completed %}
+                                <div class="topic-completed-message">
+                                    ✓ Topic Completed
+                                </div>
                             {% else %}
-                                <p>Lesson content will be added soon.</p>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            name="mark_completed"
+                                            value="yes"
+                                            class="complete-topic-btn">
+                                        Mark as Completed
+                                    </button>
+                                </form>
                             {% endif %}
                         </div>
                     </div>
-                    <!-- Topic Completion -->
-                    <div class="topic-completion-section">
-                        {% if progress_record.is_completed %}
-                            <div class="topic-completed-message">
-                                ✓ Topic Completed
+                    <div class="lesson-back-topics">
+        <a href="{% url 'course_detail' course.id %}">
+            ← Back to Topics
+        </a>
+    </div>
+                    {% else %}
+
+                    <div class="course-detail-page">
+
+                        <!-- Course Header -->
+                        <div class="course-detail-header">
+
+                            
+                            <center>
+                            <h1>{{ course.course_name }}</h1>
+
+                                </center>
+                        </div>
+
+                        <!-- Course Topics -->
+                        <section class="course-topics-section">
+
+                            <h2>Course Topics</h2>
+
+                            <div class="student-dashboard-grid">
+
+                                {% for topic in topics %}
+
+                                    <a href="{% url 'topic_detail' topic.id %}"
+                                    class="student-feature-card">
+
+                                        <div class="feature-icon">📘</div>
+
+                                        <h3>{{ topic.topic_title }}</h3>
+
+                                        {% if topic.description %}
+                                            <p>{{ topic.description }}</p>
+                                        {% endif %}
+
+                                        <span class="feature-open">
+                                            Open Lesson →
+                                        </span>
+
+                                    </a>
+
+                                {% empty %}
+
+                                    <p>No topics added to this course yet.</p>
+
+                                {% endfor %}
+
                             </div>
-                        {% else %}
-                            <form method="POST">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        name="mark_completed"
-                                        value="yes"
-                                        class="complete-topic-btn">
-                                    Mark as Completed
-                                </button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="lesson-back-topics">
-    <a href="{% url 'course_detail' course.id %}">
-        ← Back to Topics
-    </a>
-</div>
-                {% else %}
-
-                <div class="course-detail-page">
-
-                    <!-- Course Header -->
-                    <div class="course-detail-header">
-
-                        
-                        <center>
-                        <h1>{{ course.course_name }}</h1>
-
-                            </center>
-                    </div>
-
-                    <!-- Course Topics -->
-                    <section class="course-topics-section">
-
-                        <h2>Course Topics</h2>
-
-                        <div class="student-dashboard-grid">
-
-                            {% for topic in topics %}
-
-                                <a href="{% url 'topic_detail' topic.id %}"
-                                class="student-feature-card">
-
-                                    <div class="feature-icon">📘</div>
-
-                                    <h3>{{ topic.topic_title }}</h3>
-
-                                    {% if topic.description %}
-                                        <p>{{ topic.description }}</p>
-                                    {% endif %}
-
-                                    <span class="feature-open">
-                                        Open Lesson →
-                                    </span>
-
+                            <div class="course-back-button-container">
+                                <a href="{% url 'student_courses' %}"
+                                class="course-back-circle"
+                                title="Back to My Courses">
+                                    ←Back to My Courses
                                 </a>
-
-                            {% empty %}
-
-                                <p>No topics added to this course yet.</p>
-
-                            {% endfor %}
-
-                        </div>
-                        <div class="course-back-button-container">
-                            <a href="{% url 'student_courses' %}"
-                            class="course-back-circle"
-                            title="Back to My Courses">
-                                ←Back to My Courses
-                            </a>
-                        </div>
-                    </section>
+                            </div>
+                        </section>
+                        
+                    </div>
                     
-                </div>
-                
-            {% endif %}
-        </section>
-    </main>
+                {% endif %}
+            </section>
+        </main>
 </div>
 {% endblock %}
