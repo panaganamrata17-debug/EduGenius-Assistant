@@ -463,13 +463,12 @@ def quiz_view(request, topic_id):
                 is_correct=answer['is_correct']
             )
 
-        # Save topic completion in student progress
+        # Create topic progress without marking it completed
         progress, created = StudentTopicProgress.objects.get_or_create(
             student=student,
             topic=topic,
             defaults={
-                'is_completed': True,
-                'completed_at': timezone.now()
+                'is_completed': False
             }
         )
 
@@ -596,12 +595,15 @@ def learning_progress_view(request):
             "attempts": item["attempts"],
             "percentage": percentage
         })
-    # Get completed topics
-    # A topic is completed when the student submits its quiz
-    completed_topic_ids = quiz_attempts.values_list(
+    # Get topics manually marked as completed
+    completed_topic_ids = StudentTopicProgress.objects.filter(
+        student=student_profile,
+        is_completed=True
+    ).values_list(
         "topic_id",
         flat=True
-    ).distinct()
+    )
+
     completed_topics = CourseTopic.objects.filter(
         id__in=completed_topic_ids
     ).select_related("course")
