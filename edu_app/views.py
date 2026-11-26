@@ -473,12 +473,6 @@ def quiz_view(request, topic_id):
             }
         )
 
-        # If progress already exists, update it
-        if not progress.is_completed:
-            progress.is_completed = True
-            progress.completed_at = timezone.now()
-            progress.save()
-
         return redirect('quiz_result', attempt_id=attempt.id)
     return render(
         request,

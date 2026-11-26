@@ -1,24 +1,22 @@
 
 {% extends 'edu_app/base.html' %}
 {% load static %}
-
 {% block title %}Announcements | EduGenius Assistant{% endblock %}
-
 {% block content %}
 
-    <div class="teacher-dashboard">
+<div class="teacher-dashboard">
     <!-- Teacher Navbar -->
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
 
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
 
     <!-- Teacher Sidebar -->
     <aside class="teacher-sidebar">
@@ -34,37 +32,26 @@
         <a href="{% url 'logout' %}">🚪 Logout</a>
     </aside>
     <main class="teacher-announcements-content">
-
         <div class="teacher-announcements-heading">
             <span class="teacher-announcements-label">
                 COMMUNICATE • INFORM • CONNECT
             </span>
-
             <h1>Announcements</h1>
-
-            <p>
-                Share important updates and information with your students.
-            </p>
+            <p>Share important updates and information with your students.</p>
         </div>
 
         <!-- Create Announcement Form -->
         <section class="teacher-announcement-form">
-
             <h2>Create Announcement</h2>
-
             <form method="POST">
                 {% csrf_token %}
-
                 <div class="announcement-form-group">
                     <label for="title">Announcement Title</label>
-
-                    <input
-                        type="text"
+                    <input type="text"
                         id="title"
                         name="title"
                         placeholder="Enter announcement title"
-                        required
-                    >
+                        required>
                 </div>
 
                 <div class="announcement-form-group">
