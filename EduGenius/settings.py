@@ -5,6 +5,7 @@ Django settings for EduGenius project.
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,15 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env_file = BASE_DIR / ".env"
 
 if env_file.exists():
-    for line in env_file.read_text().splitlines():
+    for line in env_file.read_text(encoding="utf-8").splitlines():
         line = line.strip()
 
         if line and not line.startswith("#") and "=" in line:
             key, value = line.split("=", 1)
-            os.environ.setdefault(
-                key.strip(),
-                value.strip().strip('"').strip("'")
-            )
+            os.environ[key.strip()] = value.strip().strip('"').strip("'")
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -93,15 +91,25 @@ WSGI_APPLICATION = "EduGenius.wsgi.application"
 # Database
 # SQLite is kept for now, as in your original settings.
 # Database configuration - SQLite
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.environ.get(
-            "DJANGO_DB_PATH",
-            BASE_DIR / "db.sqlite3"
-        ),
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+print("DATABASE URL PATH:", DATABASE_URL.split("@")[-1].split("?")[0])
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
-}
+
+    DATABASES["default"]["NAME"] = "postgres"
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

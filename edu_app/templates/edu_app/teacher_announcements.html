@@ -69,7 +69,6 @@
 
                 <div class="announcement-form-group">
                     <label for="message">Announcement Message</label>
-
                     <textarea
                         id="message"
                         name="message"
@@ -78,52 +77,35 @@
                         required
                     ></textarea>
                 </div>
-
                 <button type="submit" class="announcement-publish-btn">
                     Publish Announcement
                 </button>
-
             </form>
-
         </section>
 
         <!-- Published Announcements -->
         <section class="teacher-announcements-list">
-
             <h2>Published Announcements</h2>
-
             {% for announcement in announcements %}
-
                 <div class="teacher-announcement-card">
-
                     <div class="teacher-announcement-card-header">
                         <h3>{{ announcement.title }}</h3>
-
                         <span>
                             {{ announcement.created_at|date:"d M Y" }}
                         </span>
                     </div>
-
                     <p>{{ announcement.message|linebreaks }}</p>
-
                 </div>
 
             {% empty %}
-
                 <div class="teacher-announcement-empty">
                     <h3>No announcements yet</h3>
-
                     <p>
                         Your published announcements will appear here.
                     </p>
                 </div>
-
             {% endfor %}
-
         </section>
-
     </main>
-
 </div>
-
 {% endblock %}

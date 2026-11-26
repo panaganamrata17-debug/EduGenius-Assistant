@@ -1,0 +1,287 @@
+[
+{
+  "model": "edu_app.course",
+  "pk": 1,
+  "fields": {
+    "course_name": "Python Programming",
+    "description": "Learn Python programming and concepts.",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.course",
+  "pk": 2,
+  "fields": {
+    "course_name": "Java Programming",
+    "description": "Learn Java basics, object-oriented programming, and application development.",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.course",
+  "pk": 3,
+  "fields": {
+    "course_name": "Web Technology",
+    "description": "Learn HTML, CSS, JavaScript and web development.",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.course",
+  "pk": 4,
+  "fields": {
+    "course_name": "Database Management",
+    "description": "Learn Database Management",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.course",
+  "pk": 5,
+  "fields": {
+    "course_name": "Computer Networks",
+    "description": "Learn Computer Networks",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.course",
+  "pk": 6,
+  "fields": {
+    "course_name": "Software Engineering",
+    "description": "Learn Software Engineering",
+    "semester": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 1,
+  "fields": {
+    "course": 1,
+    "topic_title": "Introduction to Python",
+    "description": "Learn the basics of Python programming.",
+    "content": "\nIntroduction to Python\n\nWhat is python ?\nPython is a high-level, interpreted programming language.\nPython is easy to learn and is used in web development,\ndata science, artificial intelligence and automation.\n\nExample:\nprint(\"Hello, World!\")\n\nOutput:\nHello, World!\nThe print() function is used to display output on the screen.\n",
+    "topic_order": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 2,
+  "fields": {
+    "course": 1,
+    "topic_title": "Variables and Data Types",
+    "description": "Learn about Variables and Data Types.",
+    "content": "\nVariables and Data Types in Python\n\nVariables are used to store data in a program.\nA variable is created when we assign a value to it.\n\n1. Variables\n\nExample:\n\nname = \"Student\"\nage = 20\nmarks = 85.5\n\nHere:\nname stores text.\nage stores an integer.\nmarks stores a decimal number.\n\n2. Rules for Naming Variables\n\n- A variable name must begin with a letter or underscore.\n- It cannot begin with a number.\n- It can contain letters, numbers, and underscores.\n- Variable names are case-sensitive.\n- Python keywords cannot be used as variable names.\n\nValid examples:\n\nstudent_name = \"Riya\"\nage2 = 20\n_total = 100\n\n3. Python Data Types\n\nint - Stores whole numbers.\n\nExample:\nage = 20\n\nfloat - Stores decimal numbers.\n\nExample:\npercentage = 85.5\n\nstr - Stores text.\n\nExample:\nname = \"Python\"\n\nbool - Stores True or False.\n\nExample:\nis_student = True\n\nlist - Stores multiple items in a list.\n\nExample:\nsubjects = [\"Python\", \"Java\", \"DBMS\"]\n\ntuple - Stores multiple items that cannot be changed.\n\nExample:\nnumbers = (10, 20, 30)\n\ndict - Stores data in key-value pairs.\n\nExample:\nstudent = {\"name\": \"Riya\", \"age\": 20}\n\nset - Stores unique values.\n\nExample:\nvalues = {10, 20, 30}\n\n4. Checking Data Types\n\nPython uses the type() function to check the data type.\n\nExample:\n\nname = \"Student\"\nage = 20\nmarks = 85.5\n\nprint(type(name))\nprint(type(age))\nprint(type(marks))\n\nOutput:\n\n<class 'str'>\n<class 'int'>\n<class 'float'>\n\n5. Type Conversion\n\nType conversion changes one data type into another.\n\nExample:\n\nage = \"20\"\nage = int(age)\n\nmarks = 85\nmarks = float(marks)\n\nnumber = 100\ntext = str(number)\n\nConclusion:\n\nVariables store values, and data types describe\nthe type of information stored in a variable.\n",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 4,
+  "fields": {
+    "course": 1,
+    "topic_title": "Conditional Statements",
+    "description": "Learn about Conditional Statements.",
+    "content": "\nConditional statements are used to make decisions in Python.\n\nPython supports if, elif, and else statements.\n\n1. if Statement\n\nThe if statement executes code when a condition is true.\n\nExample:\n\nage = 20\n\nif age >= 18:\n    print(\"You are eligible to vote\")\n\n2. if-else Statement\n\nThe else statement executes when the if condition is false.\n\nExample:\n\nage = 16\n\nif age >= 18:\n    print(\"Adult\")\nelse:\n    print(\"Minor\")\n\n3. if-elif-else Statement\n\nThe elif statement checks another condition.\n\nExample:\n\nmarks = 75\n\nif marks >= 90:\n    print(\"Grade A\")\nelif marks >= 60:\n    print(\"Grade B\")\nelse:\n    print(\"Grade C\")\n\nConditional statements help programs make decisions based on conditions.\n",
+    "topic_order": 4
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 7,
+  "fields": {
+    "course": 2,
+    "topic_title": "Introduction to Java",
+    "description": "Learn the basics of Java programming, its features, and how Java programs work.",
+    "content": "\nINTRODUCTION TO JAVA\n\n1. What is Java?\nJava is a high-level, object-oriented programming language.\nIt is used to develop desktop applications, web applications,\nmobile applications, and enterprise software.\nJava was developed by James Gosling and his team at Sun Microsystems.\nIt was released in 1995.\n\n2. Features of Java\n• Simple: Java has easy-to-understand syntax.\n• Object-Oriented: Java uses classes and objects.\n• Platform Independent: Java programs can run on different operating\n  systems.\n• Secure: Java provides security features.\n• Robust: Java supports exception handling and memory management.\n• Multithreaded: Java can execute multiple tasks at the same time.\n\n3. Why is Java Platform Independent?\nJava source code is compiled into bytecode.\nThis bytecode can run on any system that has a Java Virtual Machine (JVM).\nThis concept is known as:\nWrite Once, Run Anywhere (WORA).\n\n4. Java Components\nJDK - Java Development Kit\nUsed to develop and compile Java programs.\n\nJRE - Java Runtime Environment\nProvides the environment required to run Java applications.\n\nJVM - Java Virtual Machine\nExecutes Java bytecode.\n\n5. First Java Program\nExample:\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}\n\nOutput:\nHello, Java!\n\n6. Explanation of the Program\npublic class Main\nDefines a class named Main.\n\npublic static void main(String[] args)\nThis is the main method. Program execution starts here.\n\nSystem.out.println()\nDisplays text on the screen.\n\n7. Java File Name\nIf the class is public and named Main,\nthe file should be saved as:\nMain.java\n\n8. Java Applications\nJava is used in:\n• Android application development\n• Banking applications\n• Web applications\n• Enterprise software\n• Desktop applications\n\nConclusion:\nJava is a popular, object-oriented, and platform-independent\nprogramming language used to develop many types of applications.\n",
+    "topic_order": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 8,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Variables",
+    "description": "Learn how to declare, initialize, and use variables in Java.",
+    "content": "\nJAVA VARIABLES\n\n1. What is a Variable?\nA variable is a named memory location used to store data.\nThe value of a variable can be used and changed during program execution.\n\nExample:\nint age = 20;\nHere:\nint = data type\nage = variable name\n20 = value\n\n2. Syntax of Variable Declaration\ndataType variableName = value;\n\nExample:\nint marks = 85;\nString name = \"Rahul\";\ndouble percentage = 85.5;\n\n3. Variable Declaration and Initialization\nDeclaration means creating a variable.\n\nExample:\nint number;\nInitialization means assigning a value to a variable.\n\nExample:\nnumber = 10;\nBoth can be done together:\nint number = 10;\n\n4. Rules for Naming Variables\n• A variable name can contain letters, digits, underscore (_) and dollar\n  sign ($).\n• It cannot begin with a digit.\n• Spaces are not allowed.\n• Java keywords cannot be used as variable names.\n• Variable names are case-sensitive.\n\nExample:\nint studentAge = 20;\nint marks1 = 90;\nint _number = 5;\n\nInvalid examples:\nint 1marks = 90;\nint student age = 20;\n\n5. Types of Variables in Java\nA. Local Variable\n   A variable declared inside a method or block.\n\nExample:\npublic class Main {\n    public static void main(String[] args) {\n        int age = 20;\n        System.out.println(age);\n    }\n}\n\nB. Instance Variable\n   A variable declared inside a class but outside methods.\n   Each object has its own copy.\n\nExample:\nclass Student {\n    int marks = 80;\n}\n\nC. Static Variable\nA variable declared using the static keyword.\nIt belongs to the class and is shared by all objects.\n\nExample:\nclass Student {\n    static String college = \"ABC College\";\n}\n\n6. Example Program\npublic class Main {\n    public static void main(String[] args) {\n        int age = 20;\n        String name = \"Rahul\";\n        double marks = 85.5;\n\n        System.out.println(name);\n        System.out.println(age);\n        System.out.println(marks);\n    }\n}\n\nOutput:\nRahul\n20\n85.5\n\n7. Changing Variable Values\n\nExample:\nint number = 10;\nnumber = 25;\nSystem.out.println(number);\n\nOutput:\n25\n\nConclusion:\nVariables are used to store and manage data in Java.\nEvery variable has a data type, a name, and a value.\n",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 9,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Conditions",
+    "description": "Learn how to use conditional statements to make decisions in Java.",
+    "content": "\nJAVA CONDITIONAL STATEMENTS\n\n1. What is a Conditional Statement?\nA conditional statement is used to make decisions in a program.\nIt executes different blocks of code depending on whether a condition\nis true or false.\n\nJava provides the following conditional statements:\n\n• if statement\n• if-else statement\n• if-else-if ladder\n• nested if statement\n• switch statement\n\n2. if Statement\n   The if statement executes a block of code only when the condition is  true.\n\nSyntax:\nif (condition) {\n    // code to execute\n}\n\nExample:\nint age = 20;\nif (age >= 18) {\n    System.out.println(\"Eligible to vote\");\n}\n\nOutput:\nEligible to vote\n\n3. if-else Statement\n   The if-else statement executes one block if the condition is true\nand another block if the condition is false.\n\nExample:\nint number = 5;\nif (number % 2 == 0) {\n    System.out.println(\"Even number\");\n} else {\n    System.out.println(\"Odd number\");\n}\n\nOutput:\nOdd number\n\n4. if-else-if Ladder\n   It is used when we need to check multiple conditions.\n\nExample:\nint marks = 75;\nif (marks >= 90) {\n    System.out.println(\"Grade A\");\n} else if (marks >= 75) {\n    System.out.println(\"Grade B\");\n} else if (marks >= 50) {\n    System.out.println(\"Grade C\");\n} else {\n    System.out.println(\"Fail\");\n}\n\nOutput:\nGrade B\n\n5. Nested if Statement\n   An if statement inside another if statement is called a nested if.\n\nExample:\nint age = 20;\nboolean hasID = true;\nif (age >= 18) {\n    if (hasID) {\n        System.out.println(\"Entry allowed\");\n    }\n}\n\nOutput:\nEntry allowed\n\n6. switch Statement\n   The switch statement selects one block from multiple options.\n\nExample:\nint day = 2;\nswitch (day) {\n    case 1:\n        System.out.println(\"Monday\");\n        break;\n    case 2:\n        System.out.println(\"Tuesday\");\n        break;\n    case 3:\n        System.out.println(\"Wednesday\");\n        break;\n    default:\n        System.out.println(\"Invalid day\");\n}\n\nOutput:\nTuesday\n\nExplanation:\n• case specifies a possible value.\n• break stops execution of the switch.\n• default runs when no case matches.\n\n7. Ternary Operator\n   The ternary operator is a short form of if-else.\n\nSyntax:\ncondition ? valueIfTrue : valueIfFalse;\n\nExample:\nint age = 20;\nString result = (age >= 18) ? \"Adult\" : \"Minor\";\nSystem.out.println(result);\n\nOutput:\nAdult\n\n8. Comparison Operators\n\n==  Equal to\n!=  Not equal to\n>   Greater than\n<   Less than\n>=  Greater than or equal to\n<=  Less than or equal to\n\n9. Logical Operators\n\n&&  Logical AND\n||  Logical OR\n!   Logical NOT\n\nExample:\nint age = 20;\nif (age >= 18 && age <= 60) {\n    System.out.println(\"Eligible\");\n}\n\nOutput:\nEligible\n\nConclusion:\nConditional statements control the flow of a Java program.\nThey help a program make decisions using conditions and operators.\n",
+    "topic_order": 3
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 10,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Loops",
+    "description": "Learn how to use loops to repeat statements in Java.",
+    "content": "\nJAVA LOOPS\n\n1. What is a Loop?\nA loop is a programming structure used to execute a block of code\nrepeatedly until a condition becomes false.\nLoops reduce code repetition and make programs easier to manage.\n\nJava provides these loops:\n• for loop\n• while loop\n• do-while loop\n• enhanced for loop\n\n2. for Loop\nThe for loop is used when we know how many times we want to\nexecute a block of code.\n\nSyntax:\nfor (initialization; condition; update) {\n    // statements\n}\n\nExample:\nfor (int i = 1; i <= 5; i++) {\n    System.out.println(i);\n}\n\nOutput:\n1\n2\n3\n4\n5\n\nExplanation:\nint i = 1\nInitializes the loop variable.\ni <= 5\nChecks the condition before every iteration.\ni++\nIncreases the value of i by 1.\n\n3. while Loop\nThe while loop executes as long as the condition is true.\n\nSyntax:\nwhile (condition) {\n    // statements\n}\n\nExample:\nint i = 1;\nwhile (i <= 5) {\n    System.out.println(i);\n    i++;\n}\n\nOutput:\n1\n2\n3\n4\n5\n\nThe condition is checked before the loop body executes.\nIf the condition is false initially, the loop will not run.\n\n4. do-while Loop\nThe do-while loop executes the block at least once.\nThe condition is checked after the loop body.\n\nSyntax:\ndo {\n    // statements\n} while (condition);\n\nExample:\nint i = 1;\ndo {\n    System.out.println(i);\n    i++;\n} while (i <= 5);\n\nOutput:\n1\n2\n3\n4\n5\n\n5. Difference Between while and do-while\nwhile loop:\n• Checks condition first.\n• May execute zero times.\n\ndo-while loop:\n• Executes the body first.\n• Executes at least once.\n\n6. Enhanced for Loop\nThe enhanced for loop is used to access elements of an array\nor collection one by one.\n\nExample:\nint[] numbers = {10, 20, 30, 40};\nfor (int number : numbers) {\n    System.out.println(number);\n}\n\nOutput:\n10\n20\n30\n40\n\n7. break Statement\nThe break statement immediately terminates the loop.\n\nExample:\nfor (int i = 1; i <= 5; i++) {\n    if (i == 3) {\n        break;\n    }\n    System.out.println(i);\n}\n\nOutput:\n1\n2\n\n8. continue Statement\nThe continue statement skips the current iteration and\nmoves to the next iteration.\n\nExample:\nfor (int i = 1; i <= 5; i++) {\n    if (i == 3) {\n        continue;\n    }\n    System.out.println(i);\n}\n\nOutput:\n1\n2\n4\n5\n\n9. Nested Loop\nA loop inside another loop is called a nested loop.\n\nExample:\nfor (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 2; j++) {\n        System.out.println(i + \" \" + j);\n    }\n}\n\nOutput:\n1 1\n1 2\n2 1\n2 2\n3 1\n3 2\n\nConclusion:\nLoops are used to repeat statements efficiently.\nThe for, while, do-while, and enhanced for loops are commonly\nused in Java programming.\n",
+    "topic_order": 4
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 11,
+  "fields": {
+    "course": 3,
+    "topic_title": "Introduction to Web Technology",
+    "description": "Understand the basics of web technology, websites, browsers, servers, and how the web works.",
+    "content": "\nINTRODUCTION TO WEB TECHNOLOGY\n\n1. What is Web Technology?\nWeb technology refers to the tools, languages, and techniques used\nto create and access websites and web applications.\nIt allows users to access information and services through the internet\nusing a web browser.\n\nExamples:\n• Websites\n• Online shopping applications\n• Online banking\n• Educational websites\n\n2. What is the World Wide Web (WWW)?\nThe World Wide Web is a collection of web pages and resources\nconnected through the internet.\nUsers can access these resources using a web browser.\n\nExample:\nwww.google.com\n\n3. What is the Internet?\nThe Internet is a worldwide network of connected computers and devices\nthat communicate and share information.\nThe WWW is a service that works over the Internet.\n\n4. Website and Webpage\nWebpage:\nA single document displayed in a web browser.\n\nExample:\nA Contact Us page.\nWebsite:\nA collection of related webpages under one domain name.\n\nExample:\nA college website containing Home, About, Courses, and Contact pages.\n\n5. Types of Websites\n\nA. Static Website\nA static website displays fixed content.\nIts pages are usually created using HTML and CSS.\n\nExample:\nA simple portfolio website.\n\nB. Dynamic Website\nA dynamic website displays content that can change according to\nuser actions, database information, or other conditions.\n\nExample:\nOnline shopping or student management website.\n\n6. Client and Server\nClient:\nA device or application that requests information.\nA web browser is commonly used as a client.\n\nServer:\nA computer or software that receives requests and provides\nweb pages or data.\n\nExample:\nBrowser → Request → Web Server\nBrowser ← Response ← Web Server\n\n7. Web Browser\nA web browser is software used to access and display websites.\n\nExamples:\n• Google Chrome\n• Mozilla Firefox\n• Microsoft Edge\n• Safari\n\n8. Web Server\nA web server stores, processes, and delivers website files\nor responses to clients.\n\nExamples:\n• Apache\n• Nginx\n• Microsoft IIS\n\n9. Frontend and Backend\nFrontend:\nThe part of a website that users see and interact with.\nTechnologies:\nHTML, CSS, JavaScript\n\nBackend:\nThe server-side part that handles logic, data, and requests.\n\nTechnologies:\nPython, Java, PHP, Django, Flask\n\n10. Basic Web Technologies\nHTML:\nUsed to create the structure of a webpage.\n\nCSS:\nUsed to style and design webpages.\n\nJavaScript:\nUsed to add interactivity and dynamic behavior.\n\nDatabase:\nUsed to store and manage website data.\n\n11. How a Website Works\nStep 1: The user enters a website address in the browser.\nStep 2: The browser finds the server using the domain name.\nStep 3: The browser sends a request to the server.\nStep 4: The server processes the request.\nStep 5: The server sends a response to the browser.\nStep 6: The browser displays the webpage.\n\n12. URL\n\nURL stands for Uniform Resource Locator.\nIt is the address used to access a resource on the web.\n\nExample:\nhttps://www.example.com/about\nhttps = protocol\nwww.example.com = domain name\n/about = path\n\nConclusion:\nWeb technology helps us create and access websites and web\napplications. HTML, CSS, JavaScript, servers, and databases\nwork together to provide interactive web experiences.\n",
+    "topic_order": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 12,
+  "fields": {
+    "course": 3,
+    "topic_title": "HTML Basics",
+    "description": "Learn the basic structure of HTML and create your first webpage.",
+    "content": "\nHTML BASICS\n\n1. What is HTML?\nHTML stands for HyperText Markup Language.\nIt is the standard markup language used to create the structure\n   of webpages.\nHTML uses tags to define elements such as headings, paragraphs,\n   images, links, lists, and tables.\n\n2. Basic Structure of an HTML Document\nExample:\n<!DOCTYPE html>\n<html>\n<head>\n    <title>My First Webpage</title>\n</head>\n<body>\n    <h1>Welcome to HTML</h1>\n    <p>This is my first webpage.</p>\n</body>\n</html>\n\n3. Explanation of HTML Structure\n\n<!DOCTYPE html>\nDefines the document as HTML5.\n\n<html>\nThe root element of an HTML document.\n\n<head>\nContains information about the webpage.\n\n<title>\nDefines the title displayed on the browser tab.\n\n<body>\nContains the visible content of the webpage.\n\n<h1>\nDefines the main heading.\n\n<p>\nDefines a paragraph.\n\n4. HTML Tags and Elements\nAn HTML element usually contains an opening tag,\ncontent, and a closing tag.\nExample:\n<p>Hello World</p>\n<p> is the opening tag.\nHello World is the content.\n</p> is the closing tag.\n\nSome elements are void elements and do not need a closing tag.\nExamples:\n<br>\n<img>\n<hr>\n\n5. HTML Heading Tags\nHTML provides six heading levels.\n<h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<h4>Heading 4</h4>\n<h5>Heading 5</h5>\n<h6>Heading 6</h6>\n<h1> is the largest heading level.\n<h6> is the smallest heading level.\n\n6. Paragraph and Line Break\nParagraph:\n<p>This is a paragraph.</p>\n\nLine break:\n<p>Hello<br>World</p>\nThe <br> tag moves the text to the next line.\n\n7. HTML Links\nThe <a> tag is used to create hyperlinks.\n\nExample:\n<a href=\"https://www.google.com\">Visit Google</a>\nThe href attribute specifies the destination URL.\n\n8. HTML Images\nThe <img> tag is used to display an image.\nExample:\n<img src=\"image.jpg\" alt=\"Sample Image\">\nsrc specifies the image location.\nalt provides alternative text for the image.\n\n9. HTML Lists\nOrdered List:\n<ol>\n    <li>HTML</li>\n    <li>CSS</li>\n    <li>JavaScript</li>\n</ol>\n\nUnordered List:\n<ul>\n    <li>Python</li>\n    <li>Java</li>\n    <li>C++</li>\n</ul>\n\n<li> defines a list item.\n\n10. HTML Comments\nComments are used to write notes in HTML.\nThey are not displayed on the webpage.\n\nExample:\n<!-- This is an HTML comment -->\n\nConclusion:\nHTML is the foundation of webpage development.\nIt provides the structure and content of a webpage\nusing tags, elements, and attributes.\n",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 13,
+  "fields": {
+    "course": 3,
+    "topic_title": "CSS Basics",
+    "description": "Learn how to style HTML webpages using CSS.",
+    "content": "\nCSS BASICS\n\n1. What is CSS?\nCSS stands for Cascading Style Sheets.\nCSS is used to style and design HTML webpages.\nIt controls colors, fonts, spacing, borders, layouts,\n   and the appearance of webpage elements.\nHTML creates the structure of a webpage.\nCSS makes the webpage attractive and organized.\n\n2. CSS Syntax\nselector {\n    property: value;\n}\n\nExample:\nh1 {\n    color: blue;\n    font-size: 30px;\n}\n\nExplanation:\nh1 = selector\ncolor = property\nblue = value\n\n3. Types of CSS\nA. Inline CSS\nCSS is written directly inside an HTML element.\n\nExample:\n<p style=\"color: red;\">Hello World</p>\n\nB. Internal CSS\nCSS is written inside the <style> tag in the HTML head.\n\nExample:\n<head>\n    <style>\n        p {\n            color: green;\n        }\n    </style>\n</head>\n\nC. External CSS\nCSS is written in a separate .css file.\n\nExample:\nstyle.css\np {\n    color: purple;\n}\nLink the CSS file in HTML:\n<link rel=\"stylesheet\" href=\"style.css\">\nExternal CSS is commonly used because it keeps HTML and CSS separate.\n\n5. CSS Colors\nCSS supports different ways to specify colors.\n\nExample:\nh1 {\n    color: red;\n}\np {\n    color: #0000ff;\n}\nbody {\n    background-color: lightyellow;\n}\n\n6. CSS Text and Font Properties\nExample:\np {\n    font-family: Arial, sans-serif;\n    font-size: 18px;\n    font-weight: bold;\n    text-align: center;\n    text-decoration: underline;\n}\nfont-family specifies the font.\nfont-size specifies the text size.\nfont-weight controls boldness.\ntext-align controls alignment.\ntext-decoration adds decoration.\n\n7. CSS Background\nExample:\nbody {\n    background-color: #eaf2ff;\n}\n.box {\n    background-image: url(\"background.jpg\");\n    background-size: cover;\n}\n\n8. CSS Border\nExample:\ndiv {\n    border: 2px solid black;\n    border-radius: 10px;\n}\n\nborder adds an outline.\nborder-radius makes corners rounded.\n\n9. CSS Margin and Padding\nMargin:\nSpace outside an element.\nPadding:\nSpace inside an element, between content and border.\n\nExample:\n.box {\n    margin: 20px;\n    padding: 15px;\n}\n\n10. CSS Width and Height\nExample:\n.box {\n    width: 300px;\n    height: 150px;\n}\nThese properties control the size of an element.\n\n11. CSS Display Property\nExample:\ndiv {\n    display: block;\n}\n\nCommon display values:\nblock - starts on a new line.\ninline - stays within the same line.\ninline-block - inline but supports width and height.\nnone - hides the element.\n\n12. Simple CSS Example\n\nHTML:\n<h1 class=\"title\">Welcome to CSS</h1>\n<p class=\"message\">CSS makes webpages beautiful.</p>\n\nCSS:\n.title {\n    color: purple;\n    text-align: center;\n}\n.message {\n    color: navy;\n    font-size: 18px;\n    background-color: lightblue;\n    padding: 15px;\n    border-radius: 8px;\n}\n\nConclusion:\nCSS is used to control the design and layout of webpages.\nIt works with HTML to create attractive, readable,\nand well-organized websites.\n",
+    "topic_order": 3
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 14,
+  "fields": {
+    "course": 3,
+    "topic_title": "JavaScript Basics",
+    "description": "Learn the basics of JavaScript and add interactivity to webpages.",
+    "content": "\nJAVASCRIPT BASICS\n\n1. What is JavaScript?\nJavaScript is a programming language used to make webpages interactive\nand dynamic.\nHTML creates the structure of a webpage.\nCSS styles the webpage.\nJavaScript adds functionality and interactivity.\n\nExamples:\n• Displaying messages\n• Handling button clicks\n• Validating forms\n• Changing webpage content\n• Creating interactive menus\n\n2. Adding JavaScript to HTML\nJavaScript can be added using the <script> tag.\n\nExample:\n<!DOCTYPE html>\n<html>\n<head>\n    <title>JavaScript Example</title>\n</head>\n<body>\n    <h1>My First JavaScript</h1>\n\n    <script>\n        alert(\"Welcome to JavaScript!\");\n    </script>\n</body>\n</html>\n\n3. Displaying Output\nUsing console.log():\nconsole.log(\"Hello JavaScript\");\nOutput in browser console:\nHello JavaScript\nUsing alert():\nalert(\"Welcome!\");\nDisplays a message box.\nUsing document.write():\ndocument.write(\"Hello World\");\nWrites content into the webpage.\n\n4. JavaScript Variables\nVariables store data.\nJavaScript provides three ways to declare variables:\nvar\nlet\nconst\n\nExample:\nlet name = \"Rahul\";\nlet age = 20;\nconsole.log(name);\nconsole.log(age);\n\nOutput:\nRahul\n20\n\nlet is used for values that may change.\nconst is used for values that should not be reassigned.\nvar is the older way of declaring variables.\n\n5. JavaScript Data Types\n\nCommon data types:\nString - text\nNumber - numeric values\nBoolean - true or false\nUndefined - variable declared but not assigned\nNull - intentional absence of a value\n\nExample:\nlet studentName = \"Rahul\";\nlet marks = 85;\nlet isPassed = true;\nlet result;\nlet value = null;\n\n6. JavaScript Operators\nArithmetic Operators:\n\n+ Addition\n- Subtraction\n* Multiplication\n/ Division\n% Modulus\n\nExample:\nlet a = 10;\nlet b = 5;\nconsole.log(a + b);\n\nOutput:\n15\n\nComparison Operators:\n\n== Equal value\n=== Equal value and type\n!= Not equal\n> Greater than\n< Less than\n>= Greater than or equal to\n<= Less than or equal to\n\nLogical Operators:\n\n&& AND\n|| OR\n! NOT\n\n7. JavaScript Conditions\nExample:\nlet age = 20;\nif (age >= 18) {\n    console.log(\"Adult\");\n} else {\n    console.log(\"Minor\");\n}\n\nOutput:\nAdult\n\n8. JavaScript Loops\nfor loop:\nfor (let i = 1; i <= 5; i++) {\n    console.log(i);\n}\n\nOutput:\n1\n2\n3\n4\n5\n\nwhile loop:\nlet i = 1;\nwhile (i <= 3) {\n    console.log(i);\n    i++;\n}\n\n9. JavaScript Functions\nA function is a block of code that performs a specific task.\nExample:\nfunction greet() {\n    console.log(\"Hello Student!\");\n}\ngreet();\n\nOutput:\nHello Student!\n\n10. JavaScript Events\nAn event occurs when a user interacts with a webpage.\n\nExamples:\n• Click\n• Mouse movement\n• Keyboard input\n• Form submission\n\nExample:\n<button onclick=\"showMessage()\">Click Me</button>\n<script>\nfunction showMessage() {\n    alert(\"Button clicked!\");\n}\n</script>\nWhen the button is clicked, the message appears.\n\n11. Changing HTML Content\nJavaScript can change webpage content using the DOM.\n\nExample:\n<p id=\"demo\">Old Text</p>\n<button onclick=\"changeText()\">Change Text</button>\n<script>\nfunction changeText() {\n    document.getElementById(\"demo\").innerHTML = \"New Text\";\n}\n</script>\n\nExplanation:\ngetElementById() selects an HTML element by its ID.\ninnerHTML changes the content inside that element.\n\n12. Conclusion\nJavaScript is an important web development language.\nIt works with HTML and CSS to create interactive and dynamic\nwebpages. It is commonly used for events, form validation,\nanimations, and changing webpage content.\n",
+    "topic_order": 4
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 15,
+  "fields": {
+    "course": 1,
+    "topic_title": "Python Loops",
+    "description": "Learn how to use conditional statements to make decisions in Python.",
+    "content": "\nPython Conditional Statements\nConditional statements are used to make decisions in a program.\nThey execute different blocks of code depending on whether a\ncondition is True or False.\n\nPython conditional statements include:\n1. if statement\n2. if-else statement\n3. if-elif-else statement\n4. Nested if statement\n5. Short-hand if statement\n6. Short-hand if-else statement (conditional expression)\n\n1. if Statement\nThe if statement executes a block of code when the condition\nis True.\n\nSyntax:\nif condition:\n    statement\n\nExample:\nage = 20\nif age >= 18:\n    print(\"You are eligible to vote.\")\n\nOutput:\nYou are eligible to vote.\n\nExplanation:\nThe condition age >= 18 is True, so the statement is executed.\n\n2. if-else Statement\nThe if-else statement executes one block if the condition is\nTrue and another block if it is False.\n\nSyntax:\nif condition:\n    statements\nelse:\n    statements\n\nExample:\nage = 16\nif age >= 18:\n    print(\"Eligible to vote\")\nelse:\n    print(\"Not eligible to vote\")\n\nOutput:\nNot eligible to vote\n\nExplanation:\nThe condition is False, so the else block executes.\n\n3. if-elif-else Statement\nThe elif statement means \"else if\".\nIt is used to check multiple conditions.\n\nSyntax:\nif condition1:\n    statements\nelif condition2:\n    statements\nelif condition3:\n    statements\nelse:\n    statements\n\nExample:\nmarks = 75\nif marks >= 90:\n    print(\"Grade A\")\nelif marks >= 75:\n    print(\"Grade B\")\nelif marks >= 50:\n    print(\"Grade C\")\nelse:\n    print(\"Fail\")\n\nOutput:\nGrade B\n\nExplanation:\nPython checks conditions from top to bottom.\nWhen a condition is True, its block executes and the remaining\nconditions are skipped.\n\n4. Nested if Statement\nA nested if statement means an if statement inside another\nif statement.\n\nExample:\nage = 20\nhas_id = True\nif age >= 18:\n    if has_id:\n        print(\"Entry allowed\")\n    else:\n        print(\"ID required\")\nelse:\n    print(\"Entry not allowed\")\n\nOutput:\nEntry allowed\n\nExplanation:\nThe inner if statement is checked only when the outer\ncondition is True.\n\n5. Short-hand if Statement\nA short-hand if statement is used when only one statement\nneeds to execute.\n\nExample:\nage = 20\nif age >= 18: print(\"Adult\")\n\nOutput:\nAdult\n\n6. Short-hand if-else Statement\nA conditional expression is used to write if-else in one line.\n\nSyntax:\nvalue_if_true if condition else value_if_false\n\nExample:\nage = 16\nresult = \"Adult\" if age >= 18 else \"Minor\"\nprint(result)\n\nOutput:\nMinor\n\nExplanation:\nIf the condition is True, \"Adult\" is assigned.\nOtherwise, \"Minor\" is assigned.\n\n7. Comparison Operators in Conditions\n\nComparison operators compare two values.\n==  Equal to\n!=  Not equal to\n>   Greater than\n<   Less than\n>=  Greater than or equal to\n<=  Less than or equal to\n\nExample:\na = 10\nb = 5\nif a > b:\n    print(\"a is greater than b\")\n\nOutput:\na is greater than b\n\n8. Logical Operators in Conditions\nLogical operators combine conditions.\n\nand:\nReturns True when both conditions are True.\n\nor:\nReturns True when at least one condition is True.\n\nnot:\nReverses the result of a condition.\n\nExample:\nage = 20\nmarks = 80\nif age >= 18 and marks >= 50:\n    print(\"Eligible\")\n\nOutput:\nEligible\n\nConclusion\nConditional statements help a program make decisions.\nThey are commonly used in grading systems, login validation,\neligibility checking and other decision-making programs.\n",
+    "topic_order": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 16,
+  "fields": {
+    "course": 1,
+    "topic_title": "Python Variables and Data Types",
+    "description": "Learn about Python Variables and Data Types",
+    "content": "Study the concepts of Python Variables and Data Types.",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 17,
+  "fields": {
+    "course": 1,
+    "topic_title": "Python Operators",
+    "description": "Learn about Python Operators",
+    "content": "Study the concepts of Python Operators.",
+    "topic_order": 3
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 18,
+  "fields": {
+    "course": 1,
+    "topic_title": "Python Conditional Statements",
+    "description": "Learn about Python Conditional Statements",
+    "content": "Study the concepts of Python Conditional Statements.",
+    "topic_order": 4
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 19,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Variables and Data Types",
+    "description": "Learn about Java Variables and Data Types",
+    "content": "Study the concepts of Java Variables and Data Types.",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 20,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Operators",
+    "description": "Learn about Java Operators",
+    "content": "Study the concepts of Java Operators.",
+    "topic_order": 3
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 21,
+  "fields": {
+    "course": 2,
+    "topic_title": "Java Conditional Statements",
+    "description": "Learn about Java Conditional Statements",
+    "content": "Study the concepts of Java Conditional Statements.",
+    "topic_order": 4
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 22,
+  "fields": {
+    "course": 3,
+    "topic_title": "Introduction to HTML",
+    "description": "Learn about Introduction to HTML",
+    "content": "Study the concepts of Introduction to HTML.",
+    "topic_order": 1
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 23,
+  "fields": {
+    "course": 3,
+    "topic_title": "HTML Forms and Tables",
+    "description": "Learn about HTML Forms and Tables",
+    "content": "Study the concepts of HTML Forms and Tables.",
+    "topic_order": 2
+  }
+},
+{
+  "model": "edu_app.coursetopic",
+  "pk": 24,
+  "fields": {
+    "course": 3,
+    "topic_title": "JavaScript Fundamentals",
+    "description": "Learn about JavaScript Fundamentals",
+    "content": "Study the concepts of JavaScript Fundamentals.",
+    "topic_order": 4
+  }
+}
+]

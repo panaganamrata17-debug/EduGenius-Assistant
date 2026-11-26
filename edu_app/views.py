@@ -112,8 +112,8 @@ def login_view(request):
                 )
                 return redirect('login')
             login(request,
-    user,
-    backend='django.contrib.auth.backends.ModelBackend')
+                user,
+                backend='django.contrib.auth.backends.ModelBackend')
 
             # Remember Me
             if request.POST.get('remember'):

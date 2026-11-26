@@ -1,23 +1,19 @@
 {% extends 'edu_app/base.html' %}
 {% load static %}
 {% block title %}My Students | EduGenius Assistant{% endblock %}
-
 {% block content %}
-
-    <div class="teacher-dashboard">
-
+<div class="teacher-dashboard">
     <!-- Teacher Navbar -->
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
-
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
 
     <!-- Teacher Sidebar -->
     <aside class="teacher-sidebar">
@@ -34,52 +30,28 @@
     </aside>
 
     <main class="student-main-content">
-
         <section class="student-dashboard">
             <center>
-            <h1>My Students</h1>
-
-            <p>View registered students in EduGenius Assistant.</p>
-                </center>
+                <h1>My Students</h1>
+                <p>View registered students in EduGenius Assistant.</p>
+            </center>
             {% if students %}
                 <div class="student-dashboard-grid">
-
                     {% for student in students %}
-
                         <div class="student-feature-card">
-
                             <h3>{{ student.user.userprofile.full_name }}</h3>
-                            <p>
-                                Email: {{ student.user.email }}
+                            <p>Email: {{ student.user.email }}</p>
+                            <p>College: {{ student.college_name }}</p>
+                            <p>Course: {{ student.course_name }}</p>
+                            <p>Semester: {{ student.semester }}
                             </p>
-                            <p>
-                                College: {{ student.college_name }}
-                            </p>
-
-                            <p>
-                                Course: {{ student.course_name }}
-                            </p>
-
-                            <p>
-                                Semester: {{ student.semester }}
-                            </p>
-
                         </div>
-
                     {% endfor %}
-
                 </div>
-
             {% else %}
-
-                <p>No registered students found.</p>
-
+            <p>No registered students found.</p>
             {% endif %}
-
         </section>
-
     </main>
-
 </div>
-
 {% endblock %}

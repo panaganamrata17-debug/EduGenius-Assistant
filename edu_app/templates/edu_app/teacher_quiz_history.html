@@ -6,16 +6,15 @@
 <div class="teacher-dashboard">
     <!-- Teacher Navbar -->
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
-
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
     <!-- Teacher Sidebar -->
     <aside class="teacher-sidebar">
         <h2>🎓 EduGenius</h2>

@@ -2,53 +2,43 @@
 {% extends "edu_app/base.html" %}
 {% load static %}
 {% block title %}Teacher Attendance{% endblock %}
-
 {% block content %}
 
 <div class="student-dashboard-page">
-
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
-
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
 
     <div class="dashboard parent-dashboard">
-
         <aside class="teacher-sidebar">
-        <h2>🎓 EduGenius</h2>
-        <p class="sidebar-heading">TEACHER MENU</p><hr>
-        <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
-        <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
-        <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
-        <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
-        <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
-        <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
-        <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
-        <a href="{% url 'logout' %}">🚪 Logout</a>
-    </aside>
+            <h2>🎓 EduGenius</h2>
+            <p class="sidebar-heading">TEACHER MENU</p><hr>
+            <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'teacher_my_students' %}">👨‍🎓 My Students</a>
+            <a href="{% url 'teacher_create_quiz' %}">📝 Create Quiz</a>
+            <a href="{% url 'teacher_quiz_history' %}">📚 Quiz History</a>
+            <a href="{% url 'teacher_announcements' %}">📢 Announcements</a>
+            <a href="{% url 'teacher_student_progress' %}"> 📊 Student Progress</a>
+            <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </aside>
 
         <main class="student-main-content">
-
             <div class="revision-page attendance-page">
-
                 <h2>Student Attendance</h2>
                 <p>Select a course and date to mark attendance.</p>
-
                 <!-- Select course and date -->
                 <form method="GET" class="attendance-filter">
-
                     <label for="course">Select Course</label>
-
                     <select name="course" id="course" required>
                         <option value="">Choose Course</option>
-
                         {% for course in courses %}
                             <option value="{{ course.id }}"
                                 {% if selected_course and selected_course.id == course.id %}
@@ -60,45 +50,21 @@
                     </select>
 
                     <label for="date">Attendance Date</label>
+                    <input type="date" name="date" id="date" value="{{ attendance_date }}" required>
 
-                    <input
-                        type="date"
-                        name="date"
-                        id="date"
-                        value="{{ attendance_date }}"
-                        required
-                    >
-
-                    <button type="submit">
-                        Load Students
-                    </button>
-
+                    <button type="submit">Load Students</button>
                 </form>
 
                 {% if selected_course %}
                     <div class="attendance-table-card">
-
                         <h3>{{ selected_course.course_name }}</h3>
-
                         <div class="attendance-table-wrapper">
-
-                    {% if students %}
-
+                        {% if students %}
                         <!-- Mark attendance -->
                         <form method="POST">
                             {% csrf_token %}
-
-                            <input
-                                type="hidden"
-                                name="course_id"
-                                value="{{ selected_course.id }}"
-                            >
-
-                            <input
-                                type="hidden"
-                                name="date"
-                                value="{{ attendance_date }}"
-                            >
+                            <input type="hidden" name="course_id" value="{{ selected_course.id }}">
+                            <input type="hidden" name="date" value="{{ attendance_date }}">
 
                             <table>
                                 <thead>
@@ -112,18 +78,11 @@
                                 <tbody>
                                     {% for student in students %}
                                         <tr>
-                                            <td>
-                                                {{ student.user.userprofile.full_name }}
-                                            </td>
-
-                                            <td>
-                                                {{ student.user.email }}
-                                            </td>
-
+                                            <td>{{ student.user.userprofile.full_name }}</td>
+                                            <td>{{ student.user.email }}</td>
                                             <td>
                                                 <select name="status_{{ student.id }}" required>
                                                     <option value="">Select</option>
-
                                                     <option value="Present"
                                                         {% if student.attendance_status == "Present" %}
                                                             selected
@@ -144,28 +103,15 @@
                                 </tbody>
                             </table>
 
-                            <button type="submit">
-                                Save Attendance
-                            </button>
-
+                            <button type="submit">Save Attendance
                         </form>
-                        </div>
-                        </div>
-                        
+                    </div>
                     {% else %}
-
                         <p>No students are assigned to this course yet.</p>
-
                     {% endif %}
-
                 {% endif %}
-
             </div>
-
         </main>
-
     </div>
-
 </div>
-
 {% endblock %}

@@ -1,24 +1,20 @@
 {% extends 'edu_app/base.html' %}
 {% load static %}
-
 {% block title %}Teacher Dashboard | EduGenius Assistant{% endblock %}
-
 {% block content %}
 
 <div class="teacher-dashboard">
-
     <!-- Teacher Navbar -->
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
-
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
 
     <!-- Teacher Sidebar -->
     <aside class="teacher-sidebar">
@@ -36,109 +32,74 @@
 
     <!-- Main Dashboard Content -->
     <main class="teacher-main-content">
-
         <div class="teacher-dashboard-inner">
-
             <!-- Welcome Header -->
             <section class="teacher-welcome">
-
                 <div>
                     <span class="teacher-welcome-label">
                         TEACH • GUIDE • INSPIRE
                     </span>
-
                     <h1>Teacher Dashboard</h1>
-
                     <p>
                         Welcome back, {{ request.user.userprofile.full_name }}!
                         Manage your students and learning activities.
                     </p>
                 </div>
 
-                <div class="teacher-welcome-icon">
-                    👩‍🏫
-                </div>
-
+                <div class="teacher-welcome-icon">👩‍🏫</div>
             </section>
 
             <!-- Dashboard Features -->
             <section class="teacher-feature-section">
-
                 <div class="teacher-section-heading">
                     <h2>Teaching Tools</h2>
                     <center><p>Manage your classroom activities from one place.</p></center>
                 </div>
-
                 <div class="teacher-feature-grid">
-
                     <a href="{% url 'teacher_my_students' %}" class="teacher-feature-card">
-                        <div class="teacher-feature-icon students-icon">
-                            👨‍🎓
-                        </div>
-
+                        <div class="teacher-feature-icon students-icon">👨‍🎓</div>
                         <h3>My Students</h3>
                         <p>View and manage your students.</p>
-
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
 
                     <a href="{% url 'teacher_create_quiz' %}" class="teacher-feature-card">
-                        <div class="teacher-feature-icon quiz-icon">
-                            📝
-                        </div>
-
+                        <div class="teacher-feature-icon quiz-icon">📝</div>
                         <h3>Quiz Assignment</h3>
                         <p>Prepare and assign quizzes to students.</p>
-
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
+
                     <a href="{% url 'teacher_quiz_history' %}" class="teacher-feature-card">
                         <div class="teacher-feature-icon quiz-histroy-icon">📚</div>
                         <h3>Quiz History</h3>
                         <p>View and analyze Quiz histroy</p>
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
 
                     <a href="{% url 'teacher_announcements' %}" class="teacher-feature-card">
-                        <div class="teacher-feature-icon announcement-icon">
-                            📢
-                        </div>
-
+                        <div class="teacher-feature-icon announcement-icon">📢</div>
                         <h3>Announcements</h3>
                         <p>Share important classroom information.</p>
-
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
 
                     <a href="{% url 'teacher_student_progress' %}" class="teacher-feature-card">
-                        <div class="teacher-feature-icon performance-icon">
-                            📊
-                        </div>
-
+                        <div class="teacher-feature-icon performance-icon"> 📊</div>
                         <h3>Student Performance</h3>
                         <p>Review quiz scores and topic-wise progress.</p>
-
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
+
                     <a href="{% url 'teacher_attendance' %}" class="teacher-feature-card">
-                        <div class="teacher-feature-icon attendance-icon">
-                            📅
-                        </div>
-
+                        <div class="teacher-feature-icon attendance-icon">📅</div>
                         <h3>Attendance</h3>
-
                         <p>Mark and manage student attendance.</p>
-                        <span class="feature-open">Open →</span>
+                        <span class="feature-open">Open</span>
                     </a>
-
                 </div>
-
             </section>
-
         </div>
-
     </main>
-
 </div>
-
 {% endblock %}

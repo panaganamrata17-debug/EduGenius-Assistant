@@ -1,24 +1,21 @@
 
 {% extends 'edu_app/base.html' %}
 {% load static %}
-
 {% block title %}Create Quiz | EduGenius Assistant{% endblock %}
-
 {% block content %}
 
 <div class="teacher-dashboard">
     <!-- Teacher Navbar -->
     <header class="navbar">
-    <div class="teacher-navbar-brand">
-        <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
-        <span>EduGenius <strong>Assistant</strong></span>
-    </div>
-
-    <div class="teacher-navbar-user">
-        <span>Welcome, {{ request.user.userprofile.full_name }}</span>
-        <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
-    </div>
-</header>
+        <div class="teacher-navbar-brand">
+            <img src="{% static 'edu_app/images/logo.jpg' %}" alt="EduGenius Logo">
+            <span>EduGenius <strong>Assistant</strong></span>
+        </div>
+        <div class="teacher-navbar-user">
+            <span>Welcome, {{ request.user.userprofile.full_name }}</span>
+            <a href="{% url 'logout' %}" class="teacher-logout-btn">Logout</a>
+        </div>
+    </header>
 
     <!-- Teacher Sidebar -->
     <aside class="teacher-sidebar">
@@ -33,6 +30,7 @@
         <a href="{% url 'teacher_attendance' %}">📅 Attendance</a>
         <a href="{% url 'logout' %}">🚪 Logout</a>
     </aside>
+
     <main class="teacher-main-content">
         <div class="teacher-dashboard-inner">
             <div class="teacher-welcome">
@@ -57,20 +55,20 @@
                     {% endfor %}
                 </select>
                 <label for="question_text">Question</label>
-                <textarea
-                    name="question_text"
-                    id="question_text"
-                    rows="4"
-                    required
-                ></textarea>
+                <textarea name="question_text" id="question_text" rows="4" required></textarea>
+                
                 <label for="option_a">Option A</label>
                 <input type="text" name="option_a" id="option_a" required>
+                
                 <label for="option_b">Option B</label>
                 <input type="text" name="option_b" id="option_b" required>
+                
                 <label for="option_c">Option C</label>
                 <input type="text" name="option_c" id="option_c" required>
+                
                 <label for="option_d">Option D</label>
                 <input type="text" name="option_d" id="option_d" required>
+                
                 <label for="correct_option">Correct Answer</label>
                 <select name="correct_option" id="correct_option" required>
                     <option value="">Select correct answer</option>
@@ -79,8 +77,10 @@
                     <option value="C">Option C</option>
                     <option value="D">Option D</option>
                 </select>
+                
                 <label for="explanation">Explanation (optional)</label>
                 <textarea name="explanation" id="explanation" rows="3"></textarea>
+                
                 <button type="submit">Save Quiz Question</button>
             </form>
         </div>
