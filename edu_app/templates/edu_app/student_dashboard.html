@@ -34,7 +34,6 @@
             <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
             <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
             <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
-            <a href="{% url 'student_attendance' %}">📅 Attendance</a>
             <a href="{% url 'student_announcements' %}">📢 Announcements</a>
             <a href="{% url 'profile' %}">👤 Profile</a>
             <a href="{% url 'logout' %}">🚪 Logout</a>
@@ -107,14 +106,6 @@
                         <p>Keep track of your learning progress.</p>
                         <span class="feature-open">Open →</span>
 
-                    </a>
-
-                    <a href="{% url 'student_attendance' %}"
-                        class="student-feature-card" id="attendance">
-                            <div class="feature-icon">📅</div>
-                            <h3>Attendance</h3>
-                            <p>View your attendance</p>
-                            <span class="feature-open">Open →</span>
                     </a>
 
                     <a href="{% url 'student_announcements' %}"
