@@ -1297,6 +1297,73 @@ def parent_dashboard(request):
         }
     )
 
+
+# Link Student to Parent
+@login_required
+def link_student_view(request):
+
+    if request.method != 'POST':
+        return redirect('parent_dashboard')
+
+    # Check parent role
+    try:
+        parent_profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        return redirect('login')
+
+    if parent_profile.role != 'parent':
+        return redirect('student_dashboard')
+
+    student_email = request.POST.get('student_email', '').strip().lower()
+
+    if not student_email:
+        messages.error(request, 'Please enter the student email.')
+        return redirect('parent_dashboard')
+
+    # Find the registered student account
+    student_user = User.objects.filter(
+        email__iexact=student_email
+    ).first()
+
+    if not student_user:
+        messages.error(request, 'No account found with this email.')
+        return redirect('parent_dashboard')
+
+    try:
+        student_profile_user = student_user.userprofile
+    except UserProfile.DoesNotExist:
+        messages.error(request, 'This account does not have a profile.')
+        return redirect('parent_dashboard')
+
+    if student_profile_user.role != 'student':
+        messages.error(request, 'Please enter a student account email.')
+        return redirect('parent_dashboard')
+
+    # Find the student's existing profile
+    student = StudentProfile.objects.filter(
+        user=student_user
+    ).first()
+
+    if not student:
+        messages.error(
+            request,
+            'The student profile is not created yet. Ask the student to open their dashboard first.'
+        )
+        return redirect('parent_dashboard')
+
+    # Create the parent-student connection
+    link, created = ParentStudent.objects.get_or_create(
+        parent=request.user,
+        student=student
+    )
+
+    if created:
+        messages.success(request, 'Student linked successfully!')
+    else:
+        messages.info(request, 'This student is already linked.')
+
+    return redirect('parent_dashboard')
+
 # Parent Student Performance
 @login_required
 def parent_student_performance_view(request):

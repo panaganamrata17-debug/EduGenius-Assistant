@@ -84,6 +84,35 @@
         <!-- Parent Features -->
         <section class="feature-grid">
 
+            <!-- Link Student -->
+            <section class="parent-welcome">
+                <h2>Link Student</h2>
+                <p>Enter your child's registered student email to view their learning records.</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="form-message">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="{% url 'link_student' %}">
+                    {% csrf_token %}
+
+                    <label for="student_email">Student Email</label>
+                    <input
+                        type="email"
+                        id="student_email"
+                        name="student_email"
+                        placeholder="Enter student's registered email"
+                        required
+                    >
+
+                    <button type="submit" class="open-button">
+                        Link Student
+                    </button>
+                </form>
+            </section>
+
             <a href="{% url 'parent_student_performance' %}" class="feature-card">
                 <div class="feature-icon">📊</div>
                 <h3>Student Performance</h3>

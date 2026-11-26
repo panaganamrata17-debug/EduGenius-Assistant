@@ -113,6 +113,11 @@ urlpatterns = [
         name='parent_dashboard'
     ),
     path(
+        'parent/link-student/',
+        views.link_student_view,
+        name='link_student'
+    ),
+    path(
         'parent/student-performance/',
         views.parent_student_performance_view,
         name='parent_student_performance'
