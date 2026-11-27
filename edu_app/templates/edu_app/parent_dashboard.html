@@ -98,14 +98,14 @@
 
             <div class="feature-grid">
 
-                <!-- Enrolled Courses -->
+                <!-- Available Courses -->
                 <div class="feature-card">
-                    <h3>Enrolled Courses</h3>
+                    <h3>Available Courses</h3>
 
-                    {% for enrollment in enrollments %}
-                        <p>{{ enrollment.course.course_name }}</p>
+                    {% for course in courses %}
+                        <p>{{ course.course_name }}</p>
                     {% empty %}
-                        <p>No enrolled courses found.</p>
+                        <p>No courses available.</p>
                     {% endfor %}
                 </div>
 
@@ -183,3 +183,4 @@
 </div>
 
 {% endblock %}
+

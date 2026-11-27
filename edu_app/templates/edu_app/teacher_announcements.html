@@ -42,8 +42,14 @@
         <!-- Create Announcement Form -->
         <section class="teacher-announcement-form">
             <h2>Create Announcement</h2>
-            <form method="POST">
+            <form method="POST" id="announcementForm">
                 {% csrf_token %}
+                <input
+                    type="hidden"
+                    name="announcement_id"
+                    id="announcement_id"
+                    value=""
+                >
                 <div class="announcement-form-group">
                     <label for="title">Announcement Title</label>
                     <input type="text"
@@ -75,7 +81,7 @@
                             <option value="30">30 days</option>
                         </select>
                     </div>
-                <button type="submit" class="announcement-publish-btn">
+                <button type="submit" class="announcement-publish-btn" id="announcementSubmitBtn">
                     Publish Announcement
                 </button>
             </form>
@@ -84,26 +90,89 @@
         <!-- Published Announcements -->
         <section class="teacher-announcements-list">
             <h2>Published Announcements</h2>
+
             {% for announcement in announcements %}
                 <div class="teacher-announcement-card">
-                    <div class="teacher-announcement-card-header">
-                        <h3>{{ announcement.title }}</h3>
-                        <span>
-                            {{ announcement.created_at|date:"d M Y" }}
-                        </span>
-                    </div>
-                    <p>{{ announcement.message|linebreaks }}</p>
-                </div>
 
-            {% empty %}
-                <div class="teacher-announcement-empty">
-                    <h3>No announcements yet</h3>
-                    <p>
-                        Your published announcements will appear here.
-                    </p>
-                </div>
-            {% endfor %}
-        </section>
+                    <!-- Title and Status -->
+                    
+        <div class="teacher-announcement-card-header">
+            <h3>{{ announcement.title }}</h3>
+
+            {% if announcement.is_expired %}
+                <span class="status-expired">Expired</span>
+            {% else %}
+                <span class="status-active">Active</span>
+            {% endif %}
+        </div>
+
+        
+<!-- Posted Date and Edit Button -->
+<div class="announcement-posted-edit-row">
+
+    <p class="announcement-posted-date">
+        <strong>Posted:</strong>
+        {{ announcement.created_at|date:"d M Y" }}
+    </p>
+
+    <button
+        type="button"
+        class="announcement-edit-btn"
+        onclick="editAnnouncement(
+            '{{ announcement.id }}',
+            '{{ announcement.title|escapejs }}',
+            '{{ announcement.message|escapejs }}'
+        )">
+        ✏️ Edit
+    </button>
+
+</div>
+
+
+            <!-- Expiry Date -->
+            <p class="announcement-expiry-date">
+                <strong>Expires:</strong>
+
+                {% if announcement.expires_at %}
+                    {{ announcement.expires_at|date:"d M Y, h:i A" }}
+                {% else %}
+                    No expiry date
+                {% endif %}
+            </p>
+            <hr class="announcement-divider">
+            <!-- Announcement Message -->
+            <div class="announcement-message">
+                {{ announcement.message|linebreaks }}
+            </div>
+
+        </div>
+
+    {% empty %}
+        <div class="teacher-announcement-empty">
+            <h3>No announcements yet</h3>
+            <p>Your published announcements will appear here.</p>
+        </div>
+    {% endfor %}
+</section>
     </main>
 </div>
+<script>
+function editAnnouncement(id, title, message) {
+
+    document.getElementById('announcement_id').value = id;
+
+    document.getElementById('title').value = title;
+
+    document.getElementById('message').value = message;
+
+    document.getElementById('announcementSubmitBtn').textContent =
+        'Update Announcement';
+
+    document.getElementById('announcementForm').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+}
+</script>
 {% endblock %}
+

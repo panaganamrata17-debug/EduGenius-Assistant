@@ -34,7 +34,6 @@ class Command(BaseCommand):
 
             course, created = Course.objects.get_or_create(
                 course_name=course_name,
-                semester=1,
                 defaults={
                     "description": f"Learn {course_name}"
                 }

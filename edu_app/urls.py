@@ -15,6 +15,12 @@ urlpatterns = [
     ),
 
     path('student/courses/', views.courses_view, name='student_courses'),
+
+    path(
+        'student/certificates/',
+        views.certificates_view,
+        name='student_certificates'
+    ),
     path(
         'student/course/<int:course_id>/',
         views.course_detail_view,

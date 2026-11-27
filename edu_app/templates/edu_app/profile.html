@@ -27,7 +27,13 @@
         <aside class="sidebar">
             <h2>🎓 EduGenius</h2>
             <p class="sidebar-heading">DASHBOARD MENU</p><hr>
-            <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            {% if profile.role == "student" %}
+                <a href="{% url 'student_dashboard' %}">🏠 Dashboard</a>
+            {% elif profile.role == "teacher" %}
+                <a href="{% url 'teacher_dashboard' %}">🏠 Dashboard</a>
+            {% elif profile.role == "parent" %}
+                <a href="{% url 'parent_dashboard' %}">🏠 Dashboard</a>
+            {% endif %}
             <a href="{% url 'profile' %}">👤 Profile</a>
             <a href="{% url 'logout' %}">🚪 Logout</a>
         </aside>
@@ -60,6 +66,37 @@
 
                         <label>Role</label>
                         <input type="text" value="{{ profile.role|title }}" readonly>
+
+                        {% if profile.role == "student" %}
+    <h3>Student Information</h3>
+
+    <label>Student ID</label>
+    <input type="text" value="{{ profile.student_id|default:'Not provided' }}" readonly>
+
+    <label>Course</label>
+    <input type="text" value="{{ profile.registration_course|default:'Not provided' }}" readonly>
+
+    <label>Year</label>
+    <input type="text" value="{{ profile.year|default:'Not provided' }}" readonly>
+
+    {% elif profile.role == "teacher" %}
+        <h3>Teacher Information</h3>
+
+        <label>Department</label>
+        <input type="text" value="{{ profile.department|default:'Not provided' }}" readonly>
+
+        <label>Teaching Subject</label>
+        <input type="text" value="{{ profile.teaching_subject|default:'Not provided' }}" readonly>
+
+    {% elif profile.role == "parent" %}
+        <h3>Parent Information</h3>
+
+        <label>Relationship</label>
+        <input type="text" value="{{ profile.relationship|default:'Not provided' }}" readonly>
+
+            <label>Linked Student Name</label>
+    <input type="text" value="{{ linked_student_name|default:'Not linked' }}" readonly>
+    {% endif %}
                     </div>
                     <button type="submit" class="profile-save-btn">Save Changes</button>
                 </form>

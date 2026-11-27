@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 
 from django.contrib.auth.models import User
-
+import uuid
+from django.utils import timezone
 
 # Student Profile
 class StudentProfile(models.Model):
@@ -13,7 +14,6 @@ class StudentProfile(models.Model):
     )
     college_name = models.CharField(max_length=200)
     course_name = models.CharField(max_length=100)
-    semester = models.IntegerField()
 
     courses = models.ManyToManyField(
         "Course",
@@ -33,26 +33,9 @@ class StudentProfile(models.Model):
 class Course(models.Model):
     course_name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    semester = models.IntegerField()
 
     def __str__(self):
         return self.course_name
-
-
-# Student Course Enrollment
-class Enrollment(models.Model):
-    student = models.ForeignKey(
-        StudentProfile,
-        on_delete=models.CASCADE
-    )
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE
-    )
-    enrolled_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.student} - {self.course}"
 
 
 class CourseTopic(models.Model):
@@ -92,6 +75,17 @@ class UserProfile(models.Model):
         choices=ROLE_CHOICES
     )
 
+    # Student registration details
+    student_id = models.CharField(max_length=100, blank=True)
+    registration_course = models.CharField(max_length=100, blank=True)
+    year = models.CharField(max_length=50, blank=True)
+
+    # Teacher registration details
+    department = models.CharField(max_length=100, blank=True)
+    teaching_subject = models.CharField(max_length=100, blank=True)
+
+    # Parent registration details
+    relationship = models.CharField(max_length=50, blank=True)
 
 #  QUIZ QUESTIONS #
 
@@ -264,6 +258,13 @@ class Announcement(models.Model):
     expires_at = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
+    @property
+    def is_expired(self):
+            if self.expires_at is None:
+                return False
+
+            return self.expires_at <= timezone.now()
+
     def __str__(self):
         return self.title
 
@@ -297,4 +298,33 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.course} - {self.date} - {self.status}"
-    
+
+# STUDENT COURSE CERTIFICATE #
+
+class Certificate(models.Model):
+
+    student = models.ForeignKey(
+        StudentProfile,
+        on_delete=models.CASCADE,
+        related_name='certificates'
+    )
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='certificates'
+    )
+
+    certificate_number = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
+
+    issued_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('student', 'course')
+
+    def __str__(self):
+        return f"{self.student.user.username} - {self.course.course_name}"    

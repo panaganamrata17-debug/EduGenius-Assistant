@@ -12,7 +12,7 @@
             <span>EduGenius Assistant</span>
         </a>
         <div class="student-navbar-right">
-            <span>Welcome, {{ student_name }}!</span>
+            <span>Welcome, {{ request.user.userprofile.full_name|default:request.user.username }}</span>
             <a href="{% url 'logout' %}"
                class="student-logout-btn">
                 Logout
@@ -30,6 +30,7 @@
             <a href="{% url 'student_weak_topics' %}">🎯 Weak Topics</a>
             <a href="{% url 'revision_practice' %}">📝 Revision & Practice</a>
             <a href="{% url 'learning_progress' %}">📊 Learning Progress</a>
+            <a href="{% url 'student_certificates' %}">🏆 My Certificates</a>
             <a href="{% url 'student_announcements' %}">📢 Announcements</a>
             <a href="{% url 'profile' %}">👤 Profile</a>
             <a href="{% url 'logout' %}">🚪 Logout</a>
@@ -41,18 +42,46 @@
                 <p>Latest announcements from your teachers</p>
             </div>
             {% for announcement in announcements %}
+                <div class="teacher-announcement-card">
 
-                <div class="student-announcement-card">
+                    <!-- Title and Active / Expired Status -->
+                    <div class="teacher-announcement-card-header">
+                        <h3>{{ announcement.title }}</h3>
 
-                    <h3>{{ announcement.title }}</h3>
+                        {% if announcement.is_expired %}
+                            <span class="status-expired">Expired</span>
+                        {% else %}
+                            <span class="status-active">Active</span>
+                        {% endif %}
+                    </div>
 
-                    <p>{{ announcement.message|linebreaks }}</p>
-
-                    <span>
+                    <!-- Posted Date -->
+                    <p class="announcement-posted-date">
+                        <strong>Posted:</strong>
                         {{ announcement.created_at|date:"d M Y" }}
-                    </span>
+                    </p>
+
+                    <!-- Expiry Date -->
+                    <p class="announcement-expiry-date">
+                        <strong>Expires:</strong>
+
+                        {% if announcement.expires_at %}
+                            {{ announcement.expires_at|date:"d M Y, h:i A" }}
+                        {% else %}
+                            No expiry date
+                        {% endif %}
+                    </p>
+
+                    <!-- Divider Line -->
+                    <hr class="announcement-divider">
+
+                    <!-- Announcement Message -->
+                    <div class="announcement-message">
+                        {{ announcement.message|linebreaks }}
+                    </div>
 
                 </div>
+
                 {% empty %}
                 <div class="no-announcements">
                     <p>No announcements available right now.</p>

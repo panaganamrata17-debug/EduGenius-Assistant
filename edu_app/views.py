@@ -4,7 +4,7 @@ from .models import UserProfile, Attendance
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Course, StudentProfile, Enrollment, CourseTopic, Announcement
+from .models import Course, StudentProfile, CourseTopic, Announcement, Certificate
 from .models import (QuizQuestion, QuizAttempt, QuizAnswer, ParentStudent, StudentTopicProgress)
 from django.db.models import Sum, Count, Q
 from django.contrib.auth.decorators import login_required
@@ -93,7 +93,19 @@ def register_view(request):
             UserProfile.objects.create(
                 user=user,
                 full_name=name,
-                role=role
+                role=role,
+
+                # Student details
+                student_id=request.POST.get('student_id', '').strip(),
+                registration_course=request.POST.get('course', '').strip(),
+                year=request.POST.get('year', '').strip(),
+
+                # Teacher details
+                department=request.POST.get('department', '').strip(),
+                teaching_subject=request.POST.get('subject', '').strip(),
+
+                # Parent details
+                relationship=request.POST.get('relationship', '').strip()
             )
             # Automatically link parent with student
             if role == 'parent' and student_profile:
@@ -205,7 +217,6 @@ def courses_view(request):
     # Get or create the student's profile
     student, created = StudentProfile.objects.get_or_create(
         user=request.user,
-        defaults={'semester': 1}
     )
     # Default course subjects
     subjects = [
@@ -218,7 +229,6 @@ def courses_view(request):
     for subject in subjects:
         Course.objects.get_or_create(
             course_name=subject,
-            semester=1,
             defaults={
                 "description": f"Learn {subject}"
             }
@@ -273,7 +283,6 @@ def topic_detail_view(request, topic_id):
         defaults={
             'college_name': '',
             'course_name': '',
-            'semester': 1
         }
     )
     topic = get_object_or_404(
@@ -314,6 +323,101 @@ def topic_detail_view(request, topic_id):
         }
     )
 
+# Check whether a student has completed a course and can receive a certificate
+def check_and_issue_certificate(student, course):
+
+    topics = course.topics.all()
+
+    # Course must contain topics
+    if not topics.exists():
+        return None
+
+    # Check every topic
+    for topic in topics:
+
+        # Topic must be completed
+        completed = StudentTopicProgress.objects.filter(
+            student=student,
+            topic=topic,
+            is_completed=True
+        ).exists()
+
+        if not completed:
+            return None
+
+        # Student must pass the topic quiz with at least 60%
+        attempts = QuizAttempt.objects.filter(
+            student=student,
+            topic=topic,
+            total_questions__gt=0
+        )
+
+        passed = any(
+            attempt.percentage >= 60
+            for attempt in attempts
+        )
+
+        if not passed:
+            return None
+
+    # All topics completed and all quizzes passed
+    certificate, created = Certificate.objects.get_or_create(
+        student=student,
+        course=course
+    )
+
+    return certificate
+
+
+@login_required
+def certificates_view(request):
+
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        return redirect('login')
+
+    if profile.role != 'student':
+        return redirect('student_dashboard')
+
+    student, created = StudentProfile.objects.get_or_create(
+        user=request.user,
+        defaults={}
+    )
+
+    subjects = [
+        "Python Programming",
+        "Java Programming",
+        "Web Technology",
+    ]
+
+    courses = Course.objects.filter(
+        course_name__in=subjects
+    ).order_by('course_name')
+
+    certificate_courses = []
+
+    for course in courses:
+        certificate = check_and_issue_certificate(
+            student,
+            course
+        )
+
+        certificate_courses.append({
+            'course': course,
+            'certificate': certificate
+        })
+
+    return render(
+        request,
+        'edu_app/certificates.html',
+        {
+            'certificate_courses': certificate_courses,
+            'student_name': profile.full_name
+        }
+    )
+
+
 # Revision and Practice
 def revision_practice_view(request):
     if not request.user.is_authenticated:
@@ -328,8 +432,7 @@ def revision_practice_view(request):
         user=request.user,
         defaults={
             'college_name': '',
-            'course_name': '',
-            'semester': 1
+            'course_name': ''
         }
     )
     topics = CourseTopic.objects.select_related(
@@ -425,8 +528,7 @@ def quiz_view(request, topic_id):
         user=request.user,
         defaults={
             'college_name': '',
-            'course_name': '',
-            'semester': 1
+            'course_name': ''
         }
     )
 
@@ -434,14 +536,6 @@ def quiz_view(request, topic_id):
         CourseTopic.objects.select_related('course'),
         id=topic_id
     )
-
-    enrolled = Enrollment.objects.filter(
-        student=student,
-        course=topic.course
-    ).exists()
-
-    if not enrolled:
-        return redirect('student_courses')
 
     questions = QuizQuestion.objects.filter(
         topic=topic
@@ -1112,6 +1206,7 @@ def teacher_quiz_history(request):
         }
     )
 
+
 @login_required
 def teacher_announcements(request):
 
@@ -1123,7 +1218,44 @@ def teacher_announcements(request):
     if profile.role != 'teacher':
         return redirect('student_dashboard')
 
-    if request.method == 'POST':
+    # Edit Announcement
+    if request.method == 'POST' and request.POST.get('announcement_id'):
+
+        announcement_id = request.POST.get('announcement_id')
+
+        announcement = get_object_or_404(
+            Announcement,
+            id=announcement_id,
+            created_by=request.user
+        )
+
+        title = request.POST.get('title', '').strip()
+        message = request.POST.get('message', '').strip()
+        expiry_days = int(request.POST.get('expiry_days', 7))
+
+        if title and message:
+            announcement.title = title
+            announcement.message = message
+            announcement.expires_at = (
+                timezone.now() + timedelta(days=expiry_days)
+            )
+            announcement.save()
+
+            messages.success(
+                request,
+                'Announcement updated successfully!'
+            )
+
+            return redirect('teacher_announcements')
+
+        messages.error(
+            request,
+            'Please enter both title and message.'
+        )
+
+    # Create Announcement
+    elif request.method == 'POST':
+
         title = request.POST.get('title', '').strip()
         message = request.POST.get('message', '').strip()
         expiry_days = int(request.POST.get('expiry_days', 7))
@@ -1154,7 +1286,7 @@ def teacher_announcements(request):
     ).filter(
         Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
     ).order_by('-created_at')
-        
+
     return render(
         request,
         'edu_app/teacher_announcements.html',
@@ -1358,13 +1490,8 @@ def parent_dashboard(request):
         'topic__course'
     ).order_by('-attempted_at')
 
-    # Get enrolled courses
-    enrollments = Enrollment.objects.filter(
-        student_id__in=student_ids
-    ).select_related(
-        'student__user',
-        'course'
-    )
+    # Get all available courses
+    courses = Course.objects.all()
 
     # Get topic progress
     progress_records = StudentTopicProgress.objects.filter(
@@ -1375,9 +1502,7 @@ def parent_dashboard(request):
     )
 
     # Calculate learning progress
-    total_topics = CourseTopic.objects.filter(
-        course__enrollment__student_id__in=student_ids
-    ).distinct().count()
+    total_topics = CourseTopic.objects.count()
 
     completed_topics = progress_records.filter(
         is_completed=True
@@ -1405,7 +1530,7 @@ def parent_dashboard(request):
             'student_name': profile.full_name,
             'linked_student_name': linked_student_name,
             'attempts': attempts,
-            'enrollments': enrollments,
+            'courses': courses,
             'progress_records': progress_records,
             'total_topics': total_topics,
             'completed_topics': completed_topics,
@@ -1532,14 +1657,6 @@ def parent_student_progress_view(request):
         parent=request.user
     ).values_list('student_id', flat=True)
 
-    # Get enrolled courses of linked students
-    enrollments = Enrollment.objects.filter(
-        student_id__in=student_ids
-    ).select_related(
-        'student__user',
-        'course'
-    )
-
     # Get topic progress records
     progress_records = StudentTopicProgress.objects.filter(
         student_id__in=student_ids
@@ -1548,10 +1665,8 @@ def parent_student_progress_view(request):
         'topic__course'
     )
 
-    # Total topics in enrolled courses
-    total_topics = CourseTopic.objects.filter(
-        course__enrollment__student_id__in=student_ids
-    ).distinct().count()
+    # Total topics available to linked students
+    total_topics = CourseTopic.objects.count() * student_ids.count()
 
     # Completed topics
     completed_topics = progress_records.filter(
@@ -1574,7 +1689,6 @@ def parent_student_progress_view(request):
 
     context = {
         'parent_name': profile.full_name,
-        'enrollments': enrollments,
         'progress_records': progress_records,
         'total_topics': total_topics,
         'completed_topics': completed_topics,
@@ -1746,6 +1860,17 @@ def profile_view(request):
         student_profile = StudentProfile.objects.filter(
             user=request.user
         ).first()
+        
+    linked_student_name = ""
+    if user_profile.role == "parent":
+        parent_student = ParentStudent.objects.filter(
+            parent=request.user
+        ).select_related("student__user").first()
+
+        if parent_student:
+            linked_student_name = (
+                parent_student.student.user.userprofile.full_name
+            )
 
     success_message = ""
 
@@ -1768,10 +1893,6 @@ def profile_view(request):
                     "course_name", ""
                 ).strip()
 
-                student_profile.semester = request.POST.get(
-                    "semester", ""
-                ).strip()
-
                 student_profile.save()
 
             success_message = "Profile updated successfully!"
@@ -1779,6 +1900,7 @@ def profile_view(request):
     context = {
         "profile": user_profile,
         "student_profile": student_profile,
+        "linked_student_name": linked_student_name,
         "success_message": success_message,
     }
 

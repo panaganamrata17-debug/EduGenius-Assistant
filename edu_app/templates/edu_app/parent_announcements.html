@@ -85,12 +85,6 @@
                             and information from your college.
                         </p>
                     </div>
-
-                    <a href="{% url 'parent_dashboard' %}"
-                       class="parent-announcements-back">
-                        ← Back to Dashboard
-                    </a>
-
                 </div>
 
                 <!-- Announcement Count -->
@@ -117,34 +111,45 @@
                     {% if announcements %}
 
                         {% for announcement in announcements %}
+                            <div class="parent-announcement-card">
 
-                        <div class="parent-announcement-card">
+                                <!-- Title and Active / Expired Status -->
+                                <div class="parent-announcement-title-row">
+                                    <h3>{{ announcement.title }}</h3>
 
-                            <div class="parent-announcement-top">
-
-                                <div class="parent-announcement-icon">
-                                    📢
+                                    {% if announcement.is_expired %}
+                                        <span class="status-expired">Expired</span>
+                                    {% else %}
+                                        <span class="status-active">Active</span>
+                                    {% endif %}
                                 </div>
 
-                                <div class="parent-announcement-info">
-                                    <h3>
-                                        {{ announcement.title }}
-                                    </h3>
+                                <!-- Posted Date -->
+                                <p class="announcement-posted-date">
+                                    <strong>Posted:</strong>
+                                    {{ announcement.created_at|date:"d M Y" }}
+                                </p>
 
-                                    <span>
-                                        Posted on
-                                        {{ announcement.created_at|date:"d M Y, h:i A" }}
-                                    </span>
+                                <!-- Expiry Date -->
+                                <p class="announcement-expiry-date">
+                                    <strong>Expires:</strong>
+
+                                    {% if announcement.expires_at %}
+                                        {{ announcement.expires_at|date:"d M Y, h:i A" }}
+                                    {% else %}
+                                        No expiry date
+                                    {% endif %}
+                                </p>
+
+                                <!-- Divider Line -->
+                                <hr class="announcement-divider">
+
+                                <!-- Announcement Message -->
+                                <div class="parent-announcement-message">
+                                    {{ announcement.message|linebreaks }}
                                 </div>
 
                             </div>
-
-                            <div class="parent-announcement-message">
-                                {{ announcement.message|linebreaks }}
-                            </div>
-
-                        </div>
-
                         {% endfor %}
 
                     {% else %}
@@ -168,7 +173,12 @@
                     {% endif %}
 
                 </div>
-
+                <center>
+                    <a href="{% url 'parent_dashboard' %}"
+                       class="parent-announcements-back">
+                        ← Back to Dashboard
+                    </a>
+                </center>
             </div>
 
         </main>

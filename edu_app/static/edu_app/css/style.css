@@ -3590,6 +3590,7 @@ footer {
     font-weight: 600;
     border: 1px solid #e4e2fa;
     transition: 0.2s ease;
+    text-align: center;
 }
 
 .parent-announcements-back:hover {
@@ -4830,34 +4831,7 @@ align-items: center;
     opacity: 0.92;
 }
 
-.teacher-announcement-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
 
-.teacher-announcement-card h3 {
-    color: #392d55;
-    margin: 0;
-}
-
-.teacher-announcement-card-header span {
-    color: #888197;
-    font-size: 13px;
-}
-
-.teacher-announcement-card p {
-    color: #625c70;
-    line-height: 1.7;
-    margin-bottom: 0;
-}
-
-.teacher-announcement-empty {
-    text-align: center;
-    color: #777487;
-}
 
 @media (max-width: 900px) {
     .teacher-announcements-content {
@@ -6632,4 +6606,119 @@ align-items: center;
     .parent-dashboard .performance-table td {
         padding: 13px;
     }
+}
+
+.teacher-announcement-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.teacher-announcement-card-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.status-active,
+.status-expired {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-expired {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.announcement-posted-date,
+.announcement-expiry-date {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.announcement-message {
+    margin-top: 14px;
+}
+
+.announcement-divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 15px 0;
+}
+.announcement-edit-button-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+
+.announcement-posted-edit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.announcement-edit-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #ede9fe;
+    color: #6d28d9;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.announcement-edit-btn:hover {
+    background: #ddd6fe;
+}
+
+
+.parent-announcement-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.parent-announcement-title-row h3 {
+    margin: 0;
+}
+
+.status-active,
+.status-expired {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-expired {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+.parent-announcement-expiry {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    color: #64748b;
 }

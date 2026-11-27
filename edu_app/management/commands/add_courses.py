@@ -15,7 +15,6 @@ class Command(BaseCommand):
         for subject in subjects:
             Course.objects.get_or_create(
                 course_name=subject,
-                semester=1,
                 defaults={
                     "description": f"Learn {subject}"
                 }
