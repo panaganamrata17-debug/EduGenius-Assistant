@@ -38,6 +38,43 @@ def register_view(request):
         if role not in ['student', 'teacher', 'parent']:
             messages.error(request, 'Please select a valid role.')
             return redirect('register')
+        # Find student for parent registration
+        student_profile = None
+
+        if role == 'parent':
+            student_name = request.POST.get(
+                'student_name', ''
+            ).strip()
+
+            if not student_name:
+                messages.error(
+                    request,
+                    'Please enter the student name.'
+                )
+                return redirect('register')
+
+            matching_students = StudentProfile.objects.filter(
+                user__userprofile__full_name__iexact=student_name,
+                user__userprofile__role='student'
+            )
+
+            if matching_students.count() == 0:
+                messages.error(
+                    request,
+                    'No student found with this name. '
+                    'Please check the registered student name.'
+                )
+                return redirect('register')
+
+            if matching_students.count() > 1:
+                messages.error(
+                    request,
+                    'Multiple students have this name. '
+                    'Please contact the administrator to link the correct student.'
+                )
+                return redirect('register')
+
+            student_profile = matching_students.first()
         # Check duplicate email in username and email fields
         if (
             User.objects.filter(username__iexact=email).exists()
@@ -58,6 +95,12 @@ def register_view(request):
                 full_name=name,
                 role=role
             )
+            # Automatically link parent with student
+            if role == 'parent' and student_profile:
+                ParentStudent.objects.get_or_create(
+                    parent=user,
+                    student=student_profile
+                )
         except IntegrityError:
             messages.error(request, 'This email is already registered.')
             return redirect('register')
@@ -1276,10 +1319,8 @@ def teacher_attendance(request):
     )
 
 # Parent Dashboard
+@login_required
 def parent_dashboard(request):
-
-    if not request.user.is_authenticated:
-        return redirect('login')
 
     try:
         profile = request.user.userprofile
@@ -1289,14 +1330,89 @@ def parent_dashboard(request):
     if profile.role != 'parent':
         return redirect('student_dashboard')
 
+    # Get linked students
+    student_ids = ParentStudent.objects.filter(
+        parent=request.user
+    ).values_list('student_id', flat=True)
+
+    # Get linked student name
+    parent_student = ParentStudent.objects.filter(
+        parent=request.user
+    ).select_related(
+        'student__user__userprofile'
+    ).first()
+
+    linked_student_name = ''
+
+    if parent_student:
+        linked_student_name = (
+            parent_student.student.user.userprofile.full_name
+        )
+
+    # Get quiz performance
+    attempts = QuizAttempt.objects.filter(
+        student_id__in=student_ids
+    ).select_related(
+        'student__user',
+        'topic',
+        'topic__course'
+    ).order_by('-attempted_at')
+
+    # Get enrolled courses
+    enrollments = Enrollment.objects.filter(
+        student_id__in=student_ids
+    ).select_related(
+        'student__user',
+        'course'
+    )
+
+    # Get topic progress
+    progress_records = StudentTopicProgress.objects.filter(
+        student_id__in=student_ids
+    ).select_related(
+        'student__user',
+        'topic__course'
+    )
+
+    # Calculate learning progress
+    total_topics = CourseTopic.objects.filter(
+        course__enrollment__student_id__in=student_ids
+    ).distinct().count()
+
+    completed_topics = progress_records.filter(
+        is_completed=True
+    ).values(
+        'topic_id',
+        'student_id'
+    ).distinct().count()
+
+    remaining_topics = max(
+        total_topics - completed_topics,
+        0
+    )
+
+    if total_topics > 0:
+        progress_percentage = round(
+            (completed_topics / total_topics) * 100
+        )
+    else:
+        progress_percentage = 0
+
     return render(
         request,
         'edu_app/parent_dashboard.html',
         {
             'student_name': profile.full_name,
+            'linked_student_name': linked_student_name,
+            'attempts': attempts,
+            'enrollments': enrollments,
+            'progress_records': progress_records,
+            'total_topics': total_topics,
+            'completed_topics': completed_topics,
+            'remaining_topics': remaining_topics,
+            'progress_percentage': progress_percentage,
         }
     )
-
 
 # Link Student to Parent
 @login_required

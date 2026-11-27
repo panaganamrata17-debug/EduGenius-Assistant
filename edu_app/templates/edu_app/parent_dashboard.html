@@ -79,39 +79,65 @@
                 View academic performance, learning progress,
                 and study activities in one place.
             </p>
+            {% if linked_student_name %}
+                <p>
+                    Linked Student:
+                    <strong>{{ linked_student_name }}</strong>
+                </p>
+            {% else %}
+                <p>No student is linked to this parent account.</p>
+            {% endif %}
         </section>
 
         <!-- Parent Features -->
-        <section class="feature-grid">
+         <!-- Linked Student Learning Records -->
+        {% if linked_student_name %}
 
-            <!-- Link Student -->
-            <section class="parent-welcome">
-                <h2>Link Student</h2>
-                <p>Enter your child's registered student email to view their learning records.</p>
+        <section class="parent-welcome">
+            <h2>{{ linked_student_name }}'s Learning Overview</h2>
 
-                {% if messages %}
-                    {% for message in messages %}
-                        <p class="form-message">{{ message }}</p>
+            <div class="feature-grid">
+
+                <!-- Enrolled Courses -->
+                <div class="feature-card">
+                    <h3>Enrolled Courses</h3>
+
+                    {% for enrollment in enrollments %}
+                        <p>{{ enrollment.course.course_name }}</p>
+                    {% empty %}
+                        <p>No enrolled courses found.</p>
                     {% endfor %}
-                {% endif %}
+                </div>
 
-                <form method="POST" action="{% url 'link_student' %}">
-                    {% csrf_token %}
+                <!-- Quiz Performance -->
+                <div class="feature-card">
+                    <h3>Recent Quiz Results</h3>
 
-                    <label for="student_email">Student Email</label>
-                    <input
-                        type="email"
-                        id="student_email"
-                        name="student_email"
-                        placeholder="Enter student's registered email"
-                        required
-                    >
+                    {% for attempt in attempts|slice:":5" %}
+                        <p>
+                            {{ attempt.topic.topic_title }}:
+                            {{ attempt.percentage }}%
+                        </p>
+                    {% empty %}
+                        <p>No quiz attempts found.</p>
+                    {% endfor %}
+                </div>
 
-                    <button type="submit" class="open-button">
-                        Link Student
-                    </button>
-                </form>
-            </section>
+                <!-- Learning Progress -->
+                <div class="feature-card">
+                    <h3>Learning Progress</h3>
+
+                    <p>Total Topics: {{ total_topics }}</p>
+                    <p>Completed: {{ completed_topics }}</p>
+                    <p>Remaining: {{ remaining_topics }}</p>
+                    <p>{{ progress_percentage }}% Completed</p>
+                </div>
+
+            </div>
+        </section>
+
+        {% endif %}
+        <section class="feature-grid">
 
             <a href="{% url 'parent_student_performance' %}" class="feature-card">
                 <div class="feature-icon">📊</div>
