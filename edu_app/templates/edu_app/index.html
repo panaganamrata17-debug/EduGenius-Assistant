@@ -1,13 +1,10 @@
 
 {% extends 'edu_app/base.html' %}
 {% load static %}
-
 {% block title %}EduGenius Assistant | Home{% endblock %}
-
 {% block content %}
 
 <div class="edu-home-page">
-
     <!-- Navbar -->
     <header class="navbar">
         <a href="{% url 'home' %}" class="home-brand">
@@ -28,25 +25,18 @@
     <!-- Hero Section -->
     <section class="home-hero">
         <div class="home-hero-content">
-
-            <span class="home-hero-label">
-                ✨ AI-Powered College Learning
-            </span>
-
+            <span class="home-hero-label">✨ AI-Powered College Learning</span>
             <h1>
                 Learn Smarter with
                 <span>EduGenius Assistant</span>
             </h1>
-
             <p>
                 EduGenius Assistant is an intelligent learning platform designed to help college students understand difficult topics, practice effectively and improve their academic performance.
             </p>
-
             <div class="home-hero-buttons">
                 <a href="{% url 'register' %}" class="home-primary-btn">
                     Get Started →
                 </a>
-
                 <a href="#features" class="home-secondary-btn">
                     Explore Features
                 </a>
@@ -54,51 +44,37 @@
         </div>
         <!-- Hero Image - Right Side -->
         <div class="home-hero-image-wrapper">
-        <img
-            src="{% static 'edu_app/images/home-about.png' %}"
-            alt="Students learning with EduGenius Assistant"
-            class="home-hero-image"
-        >
-    </div>
+            <img src="{% static 'edu_app/images/home-about.png' %}"
+                alt="Students learning with EduGenius Assistant"
+                class="home-hero-image">
+        </div>
 
     </section>
 
     <!-- About Section -->
     <section id="about" class="home-section home-about-section">
-
         <div class="home-about-content">
             <span class="home-section-label">ABOUT EDUGENIUS</span>
-
             <h2>Your Smarter Learning Companion</h2>
-
             <p>
                 EduGenius Assistant brings learning support, AI assistance,
                 revision, practice and progress tracking together in one
                 platform for college students.
             </p>
-
             <a href="{% url 'register' %}" class="home-primary-btn home-bottom-btn">
                 Start Learning →
             </a>
         </div>
-
-        
-
     </section>
 
     <!-- Features Section -->
     <section id="features" class="home-section home-features-section">
-
         <div class="home-section-heading">
             <span class="home-section-label">WHAT YOU CAN DO</span>
             <h2>Explore Our Features</h2>
-            <p>
-                Helpful tools to make studying more organized and effective.
-            </p>
+            <p>Helpful tools to make studying more organized and effective.</p>
         </div>
-
         <div class="home-feature-grid">
-
             <div class="home-feature-card">
                 <div class="home-feature-icon">🎯</div>
                 <h3>AI Weak Topic Detector</h3>
@@ -122,13 +98,11 @@
                 <h3>Learning Analytics</h3>
                 <p>View your learning activity and track your progress.</p>
             </div>
-
         </div>
     </section>
 
     <!-- How It Works -->
     <section id="how-it-works" class="home-section home-how-section">
-
         <div class="home-section-heading">
             <span class="home-section-label">GET STARTED</span>
             <h2>How It Works</h2>
@@ -136,7 +110,6 @@
         </div>
 
         <div class="home-steps-grid">
-
             <div class="home-step-card">
                 <span class="home-step-number">01</span>
                 <h3>Create Your Account</h3>
@@ -154,22 +127,15 @@
                 <h3>Track Your Progress</h3>
                 <p>Complete topics and quizzes to monitor your improvement.</p>
             </div>
-
         </div>
-
         <a href="{% url 'register' %}" class="home-primary-btn home-bottom-btn">
             Get Started Today →
         </a>
-
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>
-            © 2026 EduGenius Assistant. All rights reserved.
-        </p>
+        <p>© 2026 EduGenius Assistant. All rights reserved.</p>
     </footer>
-
 </div>
-
 {% endblock %}
