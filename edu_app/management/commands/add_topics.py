@@ -27,7 +27,6 @@ class Command(BaseCommand):
                 "HTML Basics",
                 "CSS Basics",
                 "JavaScript Basics",
-                "HTML Forms and Tables",
             ],
         }
 

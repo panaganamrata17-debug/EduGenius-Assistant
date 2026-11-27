@@ -4,4 +4,4 @@ venv/
 .venv/
 __pycache__/
 *.pyc
-staticfiles/
+staticfiles/local_quiz_backup.json

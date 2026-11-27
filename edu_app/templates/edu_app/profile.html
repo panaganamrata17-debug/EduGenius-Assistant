@@ -35,7 +35,6 @@
         <main class="student-main-content">
 
             <div class="student-profile-page">
-
                 <div class="student-profile-heading">
                     <span>YOUR ACCOUNT</span>
                     <h1>My Profile</h1>
@@ -53,40 +52,19 @@
 
                     <div class="profile-form-section">
                         <h2>Personal Information</h2>
-
                         <label>Full Name</label>
-                        <input
-                            type="text"
-                            name="full_name"
-                            value="{{ profile.full_name }}"
-                            required
-                        >
+                        <input type="text" name="full_name" value="{{ profile.full_name }}" required>
 
                         <label>Email Address</label>
-                        <input
-                            type="email"
-                            value="{{ request.user.email }}"
-                            readonly
-                        >
+                        <input type="email" value="{{ request.user.email }}" readonly>
 
                         <label>Role</label>
-                        <input
-                            type="text"
-                            value="{{ profile.role|title }}"
-                            readonly
-                        >
+                        <input type="text" value="{{ profile.role|title }}" readonly>
                     </div>
-                    <button type="submit" class="profile-save-btn">
-                        Save Changes
-                    </button>
-
+                    <button type="submit" class="profile-save-btn">Save Changes</button>
                 </form>
-
             </div>
-
         </main>
-
     </div>
 </div>
-
 {% endblock %}
